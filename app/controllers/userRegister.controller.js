@@ -9,13 +9,19 @@
    * @since: 30-07-2021
    */
   const {
-      validationSchema
+      validationUserRegistration,
+      validateUserLogin
   } = require('../utils/validation.js');
   const bcrypt = require('bcrypt');
   const service = require('../service/userRegister.service.js');
 
   class UserRegisterController {
 
+      /**
+       * @description register user
+       * @param {*} request from client
+       * @param {*} response to client
+       */
       register = (req, res) => {
           try {
               const saltRounds = 10;
@@ -23,7 +29,7 @@
               const {
                   error,
                   value
-              } = validationSchema.validate(req.body);
+              } = validationUserRegistration.validate(req.body);
               if (error) {
                   return res.status(400).send({
                       message: error.details[0].message
@@ -41,7 +47,7 @@
                   if (error) {
                       res.status(500).send({
                           success: false,
-                          message: "Some error occurred while registering the user"
+                          message: error
                       });
                   } else {
                       res.status(200).send({
@@ -52,12 +58,55 @@
                   }
               });
           } catch (error) {
-              console.log(error);
               res.status(500).send({
                   success: false,
                   message: "Some error occurred while registering user"
               });
           }
       };
+
+      /**
+       * @description login authentication
+       * @param {*} request from client
+       * @param {*} response to client
+       */
+      login = (req, res) => {
+          try {
+              const {
+                  error,
+                  value
+              } = validateUserLogin.validate(req.body);
+              if (error) {
+                  return res.status(400).send({
+                      message: error.details[0].message
+                  });
+              }
+              // User details
+              const userCredentials = {
+                  email: req.body.email,
+                  password: req.body.password
+              };
+              service.login(userCredentials, (error, data) => {
+                  if (error) {
+                      res.status(500).send({
+                          success: false,
+                          message: error
+                      });
+                  } else {
+                      res.status(200).send({
+                          success: true,
+                          message: "User logged in!",
+                          token: data
+                      });
+                  }
+              });
+          } catch (error) {
+              console.log(error);
+              res.status(500).send({
+                  success: false,
+                  message: "Some error occurred while authenticating the user"
+              });
+          }
+      }
   }
   module.exports = new UserRegisterController();

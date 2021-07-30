@@ -1,5 +1,5 @@
 const Joi = require('joi');
-const validationSchema = Joi.object({
+const validationUserRegistration = Joi.object({
     username: Joi.string()
         .alphanum()
         .min(3)
@@ -19,4 +19,12 @@ const validationSchema = Joi.object({
         .required().pattern(new RegExp("^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$"))
 });
 
-module.exports={validationSchema};
+const validateUserLogin = Joi.object({
+    email: Joi.string().email().required().pattern(new RegExp("^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$")),
+    password: Joi.string().required()
+});
+
+module.exports = {
+    validationUserRegistration,
+    validateUserLogin
+};
