@@ -8,8 +8,7 @@
    * @since: 30-07-2021
    */
   const registerModel = require('../models/userRegister.model.js');
-  const bcrypt = require('bcrypt');
-  const jwt = require('jsonwebtoken');
+  const authHelper = require('../utils/authenticationHelper.js');
 
   class UserRegisterService {
       register = (userDetails, callback) => {
@@ -23,27 +22,22 @@
       }
 
       login = (userCredentials, callback) => {
-          const APP_SECRET = "myappsecret";
           registerModel.login(userCredentials, (err, doc) => {
               if (err) {
                   callback(err, null);
               } else {
-                  if (this.comparePassword(userCredentials.password, doc.password)) {
-                      let token = jwt.sign({
-                          data: doc.email,
-                          expiresIn: "1h"
-                      }, APP_SECRET);
-                      callback(null, token);
+                  if (null === doc) {
+                      callback("Email is incorrect", null);
                   } else {
-                      callback("Please enter a valid password", null);
+                      if (authHelper.comparePassword(userCredentials.password, doc.password)) {
+                          callback(null, authHelper.generateToken(doc));
+                      } else {
+                          callback("Please enter a valid password", null);
+                      }
                   }
               }
           });
       }
 
-      comparePassword = (userEnteredPassword, passwordInDb) => {
-          return bcrypt.compareSync(userEnteredPassword, passwordInDb)
-      }
-      
   }
   module.exports = new UserRegisterService();

@@ -12,7 +12,7 @@
       validationUserRegistration,
       validateUserLogin
   } = require('../utils/validation.js');
-  const bcrypt = require('bcrypt');
+  const authHelper = require('../utils/authenticationHelper.js');
   const service = require('../service/userRegister.service.js');
 
   class UserRegisterController {
@@ -24,7 +24,6 @@
        */
       register = (req, res) => {
           try {
-              const saltRounds = 10;
               //destructuring
               const {
                   error,
@@ -35,14 +34,16 @@
                       message: error.details[0].message
                   });
               }
+              let encryptedPassword=authHelper.encryptPassword(req.body.password);
               // User details
               const userDetails = {
                   firstName: req.body.firstName,
                   lastName: req.body.lastName,
                   email: req.body.email,
                   phoneNumber: req.body.phoneNumber,
-                  password: bcrypt.hashSync(req.body.password, saltRounds)
-              };
+                  password: encryptedPassword
+              }
+              console.log("hello",userDetails);
               service.register(userDetails, (error, data) => {
                   if (error) {
                       res.status(500).send({
@@ -60,7 +61,7 @@
           } catch (error) {
               res.status(500).send({
                   success: false,
-                  message: "Some error occurred while registering user"
+                  message: error
               });
           }
       };

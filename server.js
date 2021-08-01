@@ -1,6 +1,7 @@
 require('dotenv').config();
 const express = require('express');
 const bodyParser = require('body-parser');
+const dbConnectionHelper = require('./app/utils/dbConnectionHelper');
 
 // create express app
 const app = express();
@@ -13,19 +14,7 @@ app.use(bodyParser.urlencoded({
 // parse requests of content-type - application/json
 app.use(bodyParser.json())
 
-const mongoose = require('mongoose');
-
-mongoose.Promise = global.Promise;
-
-// Connecting to the database
-mongoose.connect(process.env.DB_URL, {
-    useNewUrlParser: true
-}).then(() => {
-    console.log("Successfully connected to the database");
-}).catch(err => {
-    console.log('Could not connect to the database. Exiting now...', err);
-    process.exit();
-});
+dbConnectionHelper.connectToDb();
 
 // define a simple route
 app.get('/', (req, res) => {
