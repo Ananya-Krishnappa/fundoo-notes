@@ -1,7 +1,7 @@
 require('dotenv').config();
 const express = require('express');
 const bodyParser = require('body-parser');
-const dbConnectionHelper = require('./app/utils/dbConnectionHelper');
+const dbConnectionHelper = require('./app/utils/dbConnection.js');
 
 // create express app
 const app = express();
@@ -24,7 +24,7 @@ app.get('/', (req, res) => {
 });
 
 // Require Notes routes
-require('./app/routes/userRegister.routes.js')(app);
+require('./app/routes/userAuth.js')(app);
 
 // listen for requests
 app.listen(process.env.PORT, () => {

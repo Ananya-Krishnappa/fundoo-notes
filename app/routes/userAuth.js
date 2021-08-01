@@ -1,4 +1,4 @@
-const userRegister = require('../controllers/userRegister.controller.js');
+const userRegister = require('../controllers/userAuth.js');
 
 module.exports = (app) => {
 

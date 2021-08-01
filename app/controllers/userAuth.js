@@ -12,8 +12,8 @@
       validationUserRegistration,
       validateUserLogin
   } = require('../utils/validation.js');
-  const authHelper = require('../utils/authenticationHelper.js');
-  const service = require('../service/userRegister.service.js');
+  const authHelper = require('../utils/authentication.js');
+  const service = require('../service/userAuth.js');
 
   class UserRegisterController {
 
@@ -25,16 +25,28 @@
       register = (req, res) => {
           try {
               //destructuring
+              if (Object.keys(req.body).length === 0 && req.body.constructor === Object) {
+                  return res.status(400).json({
+                      message: "Invalid Params. Usage: { " +
+                          "'firstName': '<first_name>'," +
+                          "'lastName': '<last_name>'," +
+                          "'email': '<email>'," +
+                          "'phoneNumber': '<phone_number>'," +
+                          "'password': '<password>'" +
+                          "}"
+                  });
+              }
               const {
                   error,
                   value
               } = validationUserRegistration.validate(req.body);
               if (error) {
-                  return res.status(400).send({
+                  return res.status(400).json({
+                      success: false,
                       message: error.details[0].message
                   });
               }
-              let encryptedPassword=authHelper.encryptPassword(req.body.password);
+              let encryptedPassword = authHelper.encryptPassword(req.body.password);
               // User details
               const userDetails = {
                   firstName: req.body.firstName,
@@ -43,15 +55,15 @@
                   phoneNumber: req.body.phoneNumber,
                   password: encryptedPassword
               }
-              console.log("hello",userDetails);
+              console.log("hello", userDetails);
               service.register(userDetails, (error, data) => {
                   if (error) {
-                      res.status(500).send({
+                      res.status(500).json({
                           success: false,
                           message: error
                       });
                   } else {
-                      res.status(200).send({
+                      res.status(201).json({
                           success: true,
                           message: "User registered successfully!",
                           data: data
@@ -59,7 +71,7 @@
                   }
               });
           } catch (error) {
-              res.status(500).send({
+              res.status(500).json({
                   success: false,
                   message: error
               });
@@ -78,7 +90,8 @@
                   value
               } = validateUserLogin.validate(req.body);
               if (error) {
-                  return res.status(400).send({
+                  return res.status(400).json({
+                      success: false,
                       message: error.details[0].message
                   });
               }
@@ -89,12 +102,12 @@
               };
               service.login(userCredentials, (error, data) => {
                   if (error) {
-                      res.status(500).send({
+                      res.status(500).json({
                           success: false,
                           message: error
                       });
                   } else {
-                      res.status(200).send({
+                      res.status(201).json({
                           success: true,
                           message: "User logged in!",
                           token: data
@@ -103,7 +116,7 @@
               });
           } catch (error) {
               console.log(error);
-              res.status(500).send({
+              res.status(500).json({
                   success: false,
                   message: "Some error occurred while authenticating the user"
               });

@@ -13,10 +13,10 @@ const validationUserRegistration = Joi.object({
         }
     }).required().pattern(new RegExp("^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$")),
     password: Joi.string().required()
-        .pattern(new RegExp('^[a-zA-Z0-9]{3,30}$')),
+        .pattern(new RegExp('^(?=.*[0-9])(?=.*[!@_#$%^&*])[a-zA-Z0-9!@_#$%^&*]{6,16}$')),
     repeatPassword: Joi.ref('password'),
     phoneNumber: Joi.string()
-        .required().pattern(new RegExp("^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$"))
+        .required().pattern(new RegExp("^[\+]?[(]?[0-9]{3}[)]?[-\\s\.]?[0-9]{3}[-\\s\.]?[0-9]{4,6}$"))
 });
 
 const validateUserLogin = Joi.object({

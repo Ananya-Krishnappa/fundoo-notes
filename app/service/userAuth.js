@@ -7,10 +7,11 @@
    * @version: 1.0.0
    * @since: 30-07-2021
    */
-  const registerModel = require('../models/userRegister.model.js');
-  const authHelper = require('../utils/authenticationHelper.js');
+  const registerModel = require('../models/userAuth.js');
+  const authHelper = require('../utils/authentication.js');
 
   class UserRegisterService {
+
       register = (userDetails, callback) => {
           registerModel.register(userDetails, (err, doc) => {
               if (err) {
