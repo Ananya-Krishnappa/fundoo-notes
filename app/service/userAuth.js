@@ -12,6 +12,11 @@
 
   class UserRegisterService {
 
+      /**
+       * @description Function register user
+       * @param {*} userDetails
+       * @param {*} callback 
+       */
       register = (userDetails, callback) => {
           registerModel.register(userDetails, (err, doc) => {
               if (err) {
@@ -22,6 +27,11 @@
           });
       }
 
+      /**
+       * @description Function login user
+       * @param {*} userDetails
+       * @param {*} callback 
+       */
       login = (userCredentials, callback) => {
           registerModel.login(userCredentials, (err, doc) => {
               if (err) {

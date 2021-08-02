@@ -39,6 +39,12 @@
   const UserRegister = mongoose.model('UserRegister', UserRegisterSchema);
 
   class UserRegisterModel {
+
+      /**
+       * @description Method to register a user
+       * @param {*} userDetails object and a callback
+       * @param {*} res
+       */
       register = (userDetails, callback) => {
           const newUser = new UserRegister({
               firstName: userDetails.firstName,
@@ -56,8 +62,16 @@
           });
       }
 
+      /**
+       * @description Method to login 
+       * @param {*} userCredentials, callback 
+       * @param {*} res 
+       * @returns 
+       */
       login = (userCredentials, callback) => {
-          UserRegister.findOne({'email':userCredentials.email}, (err, doc) => {
+          UserRegister.findOne({
+              'email': userCredentials.email
+          }, (err, doc) => {
               if (err) {
                   callback(err, null);
               } else {

@@ -46,16 +46,14 @@
                       message: error.details[0].message
                   });
               }
-              let encryptedPassword = authHelper.encryptPassword(req.body.password);
               // User details
               const userDetails = {
                   firstName: req.body.firstName,
                   lastName: req.body.lastName,
                   email: req.body.email,
                   phoneNumber: req.body.phoneNumber,
-                  password: encryptedPassword
+                  password: authHelper.encryptPassword(req.body.password)
               }
-              console.log("hello", userDetails);
               service.register(userDetails, (error, data) => {
                   if (error) {
                       res.status(500).json({
@@ -115,7 +113,6 @@
                   }
               });
           } catch (error) {
-              console.log(error);
               res.status(500).json({
                   success: false,
                   message: "Some error occurred while authenticating the user"
