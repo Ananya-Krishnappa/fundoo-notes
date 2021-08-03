@@ -1,10 +1,18 @@
 require('dotenv').config();
 const express = require('express');
 const bodyParser = require('body-parser');
-const dbConnectionHelper = require('./app/utils/dbConnection.js');
+const swaggerUi = require('swagger-ui-express');
+const {
+    swaggerSpecs
+} = require('./swagger/swaggerSpecification.js');
+const dbConnectionHelper = require('./app/config/dbConnection.js');
 
 // create express app
 const app = express();
+
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpecs, {
+    explorer: true
+}));
 
 // parse requests of content-type - application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({
@@ -15,13 +23,6 @@ app.use(bodyParser.urlencoded({
 app.use(bodyParser.json())
 
 dbConnectionHelper.connectToDb();
-
-// define a simple route
-app.get('/', (req, res) => {
-    res.json({
-        "message": "Welcome to Fundoo-Notes application. Take notes quickly. Organize and keep track of all your notes."
-    });
-});
 
 // Require Notes routes
 require('./app/routes/userAuth.js')(app);

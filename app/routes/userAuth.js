@@ -1,11 +1,185 @@
+/**
+ * @openapi
+ * components:
+ *   schemas:
+ *     Register:
+ *       type: object
+ *       required:
+ *         - firstName
+ *         - lastName
+ *         - email
+ *         - phoneNumber
+ *         - password
+ *       properties:
+ *         id:
+ *           type: integer
+ *           description: The Auto-generated id of a post
+ *         firstName:
+ *           type: string
+ *           description: first name of user
+ *         lastName:
+ *           type: string
+ *           description: last name of user
+ *         email:
+ *           type: string
+ *           descripton: email of user
+ *         phoneNumber:
+ *           type: string
+ *           descripton: phoneNumber of user
+ *         password:
+ *           type: string
+ *           descripton: password of user
+ *         createdAt:
+ *            type: string
+ *            format: date
+ *            description: The date of the record creation
+ *         updatedAt:
+ *            type: string
+ *            format: date
+ *            description: The date of the record creation
+ *       example:
+ *         firstName: Willa
+ *         lastName: Bartell
+ *         email: Rita_Rutherford6@gmail.com
+ *         phoneNumber: (705) 995-6141
+ *         password: BPG1_UAn8gt9LQx
+ *     Login:
+ *       type: object
+ *       required:
+ *         - email
+ *         - password
+ *       properties:
+ *         token:
+ *           type: string
+ *           description: jwt token on successful authentication
+ *         email:
+ *           type: string
+ *           descripton: email of user
+ *         password:
+ *           type: string
+ *           descripton: password of user
+ *       example:
+ *         email: Rita_Rutherford6@gmail.com
+ *         password: BPG1_UAn8gt9LQx
+ * 
+ */
+
 const userRegister = require('../controllers/userAuth.js');
 
 module.exports = (app) => {
+    /**
+     * @openapi
+     *  tags: 
+     *    name: Welcome
+     *    description: Welcome Page
+     */
+    /**
+     * @openapi
+     * /:
+     *   get:
+     *     tags: [Welcome]
+     *     description: Welcome to Fundoo-Notes application!
+     *     responses:
+     *       200:
+     *         description: Take notes quickly. Organize and keep track of all your notes.
+     */
+    app.get('/', (req, res) => {
+        res.json({
+            "message": "Welcome to Fundoo-Notes application. Take notes quickly. Organize and keep track of all your notes."
+        });
+    });
 
-    //maps the register request to userRegister method in userRegisterController
+    /**
+     * @openapi
+     *  tags: 
+     *    name: Register
+     *    description: Register a user
+     */
+    /**
+     * @openapi
+     * /register:
+     *   post:
+     *     tags: [Register]
+     *     summary: Register a new user
+     *     requestBody:
+     *       required: true
+     *       content:
+     *         application/json:
+     *           schema:
+     *             $ref: '#/components/schemas/Register'
+     *     parameters:
+     *       - name: firstName
+     *         in: formData
+     *         required: true
+     *         type: string
+     *       - name: lastName
+     *         in: formData
+     *         required: true
+     *         type: string
+     *       - name: email
+     *         in: formData
+     *         required: true
+     *         type: string
+     *       - name: phoneNumber
+     *         in: formData
+     *         required: true
+     *         type: string
+     *       - name: password
+     *         in: formData
+     *         required: true
+     *         type: string
+     *     responses:
+     *          200:
+     *              description: The user is registered successfully
+     *              content:
+     *                  application/json:
+     *                      schema:
+     *                          $ref: '#/components/schemas/Register'
+     *          500:
+     *              description: Some server error
+     */
     app.post('/register', userRegister.register);
 
-    //maps the register request to login method in userRegisterController
+    /**
+     * @openapi
+     *    tags: 
+     *      name: Login
+     *      description: User login
+     */
+    /**
+     * @openapi
+     *
+     * /login:
+     *   post:
+     *     summary: User login
+     *     tags: [Login]
+     *     requestBody:
+     *       required: true
+     *       content:
+     *         application/json:
+     *           schema:
+     *             $ref: '#/components/schemas/Login'
+     *     produces:
+     *       - application/json
+     *     parameters:
+     *       - name: email
+     *         in: formData
+     *         required: true
+     *         type: string
+     *       - name: password
+     *         in: formData
+     *         required: true
+     *         type: string
+     *     responses:
+     *          200:
+     *              description: Login successful
+     *              content:
+     *                  application/json:
+     *                      schema:
+     *                          $ref: '#/components/schemas/Login'
+     *          500:
+     *              description: Some server error
+     */
     app.post('/login', userRegister.login);
 
 }
