@@ -16,9 +16,11 @@ const options = {
         email: "ananyak3395@gmail.com",
       },
     },
-    servers: [{
-      url: "http://localhost:3000/",
-    }, ],
+    servers: [
+      {
+        url: "http://localhost:3000/",
+      },
+    ],
   },
   apis: ["./app/routes/userAuth.js"],
 };
@@ -26,5 +28,5 @@ const options = {
 const swaggerSpecs = swaggerJsdoc(options);
 
 module.exports = {
-  swaggerSpecs
+  swaggerSpecs,
 };
