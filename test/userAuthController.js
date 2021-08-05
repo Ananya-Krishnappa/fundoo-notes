@@ -144,7 +144,7 @@ describe("User Authentication", function () {
       userAuthController.login(req, res);
       expect(loginStub.calledOnce).to.be.true;
       expect(status.calledOnce).to.be.true;
-      expect(status.args[0][0]).to.equal(201);
+      expect(status.args[0][0]).to.equal(200);
       expect(json.calledOnce).to.be.true;
       expect(json.args[0][0].token).to.equal(token);
     });

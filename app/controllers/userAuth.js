@@ -11,7 +11,7 @@
 const { validationUserRegistration, validateUserLogin } = require("../utils/validation.js");
 const authHelper = require("../utils/authentication.js");
 const service = require("../service/userAuth.js");
-
+const logger = require("../config/loggerConfig.js");
 class UserRegisterController {
   /**
    * @description register user
@@ -22,6 +22,9 @@ class UserRegisterController {
     try {
       // destructuring
       if (Object.keys(req.body).length === 0 && req.body.constructor === Object) {
+        logger.error(
+          "Invalid Params. Usage: { 'firstName': '<first_name>','lastName': '<last_name>','email': '<email>','phoneNumber': '<phone_number>','password': '<password>'}"
+        );
         return res.status(400).json({
           message:
             "Invalid Params. Usage: { " +
@@ -50,11 +53,13 @@ class UserRegisterController {
       };
       service.register(userDetails, (error, data) => {
         if (error) {
+          logger.error("Error while registering the new user", error);
           res.status(500).json({
             success: false,
             message: error,
           });
         } else {
+          logger.info("User registered successfully!", data);
           res.status(201).json({
             success: true,
             message: "User registered successfully!",
@@ -63,6 +68,7 @@ class UserRegisterController {
         }
       });
     } catch (error) {
+      logger.error("Error while registering the new user", error);
       res.status(500).json({
         success: false,
         message: error,
@@ -79,6 +85,7 @@ class UserRegisterController {
     try {
       const { error, value } = validateUserLogin.validate(req.body);
       if (error) {
+        logger.error("Error while authenticating the user", error);
         return res.status(400).json({
           success: false,
           message: error.details[0].message,
@@ -91,12 +98,14 @@ class UserRegisterController {
       };
       service.login(userCredentials, (error, data) => {
         if (error) {
+          logger.error("Error while authenticating the user", error);
           res.status(500).json({
             success: false,
             message: error,
           });
         } else {
-          res.status(201).json({
+          logger.info("User logged in!", data);
+          res.status(200).json({
             success: true,
             message: "User logged in!",
             token: data,
@@ -104,6 +113,7 @@ class UserRegisterController {
         }
       });
     } catch (error) {
+      logger.error("Error while authenticating the user", error);
       res.status(500).json({
         success: false,
         message: "Some error occurred while authenticating the user",

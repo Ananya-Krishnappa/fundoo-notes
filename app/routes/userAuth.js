@@ -129,7 +129,7 @@ module.exports = (app) => {
    *         required: true
    *         type: string
    *     responses:
-   *          200:
+   *          201:
    *              description: The user is registered successfully
    *              content:
    *                  application/json:

@@ -4,7 +4,7 @@ const bodyParser = require("body-parser");
 const swaggerUi = require("swagger-ui-express");
 const { swaggerSpecs } = require("./swagger/swaggerSpecification.js");
 const dbConnectionHelper = require("./app/config/dbConnection.js");
-
+const logger = require("./app/config/loggerConfig");
 // create express app
 const app = express();
 

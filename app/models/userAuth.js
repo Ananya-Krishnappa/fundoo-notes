@@ -8,6 +8,7 @@
  * @since: 30-07-2021
  */
 const mongoose = require("mongoose");
+const logger = require("../config/loggerConfig.js");
 
 const UserRegisterSchema = mongoose.Schema(
   {
@@ -57,8 +58,10 @@ class UserRegisterModel {
     });
     newUser.save((err, doc) => {
       if (err) {
+        logger.error("Error while saving the new user", err);
         callback(err, null);
       } else {
+        logger.info("User saved successfully", doc);
         callback(null, doc);
       }
     });
@@ -77,8 +80,10 @@ class UserRegisterModel {
       },
       (err, doc) => {
         if (err) {
+          logger.error("Error while login", err);
           callback(err, null);
         } else {
+          logger.info("Email is matched", doc);
           callback(null, doc);
         }
       }

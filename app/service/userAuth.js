@@ -9,6 +9,7 @@
  */
 const registerModel = require("../models/userAuth.js");
 const authHelper = require("../utils/authentication.js");
+const logger = require("../config/loggerConfig.js");
 
 class UserRegisterService {
   /**
@@ -19,8 +20,10 @@ class UserRegisterService {
   register = (userDetails, callback) => {
     registerModel.register(userDetails, (err, doc) => {
       if (err) {
+        logger.error("Error while registering the new user", err);
         callback(err, null);
       } else {
+        logger.info("User registered successfully!", doc);
         callback(null, doc);
       }
     });
@@ -34,14 +37,18 @@ class UserRegisterService {
   login = (userCredentials, callback) => {
     registerModel.login(userCredentials, (err, doc) => {
       if (err) {
+        logger.error("Error while registering the new user", err);
         callback(err, null);
       } else {
         if (doc === null) {
+          logger.info("Email is incorrect", doc);
           callback("Email is incorrect", null);
         } else {
           if (authHelper.comparePassword(userCredentials.password, doc.password)) {
+            logger.info("Token is generated", authHelper.generateToken(doc));
             callback(null, authHelper.generateToken(doc));
           } else {
+            logger.info("Please enter a valid password");
             callback("Please enter a valid password", null);
           }
         }
