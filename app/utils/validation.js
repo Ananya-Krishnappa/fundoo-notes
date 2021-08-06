@@ -29,7 +29,15 @@ const validateUserLogin = Joi.object({
   password: Joi.string().required(),
 });
 
+const validateForgotPassword = Joi.object({
+  email: Joi.string()
+    .email()
+    .required()
+    .pattern(new RegExp("^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:.[a-zA-Z0-9-]+)*$")),
+});
+
 module.exports = {
   validationUserRegistration,
   validateUserLogin,
+  validateForgotPassword,
 };

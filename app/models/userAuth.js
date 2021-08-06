@@ -73,14 +73,14 @@ class UserRegisterModel {
    * @param {*} res
    * @returns
    */
-  login = (userCredentials, callback) => {
+  findUserByEmail = (userDetails, callback) => {
     UserRegister.findOne(
       {
-        email: userCredentials.email,
+        email: userDetails.email,
       },
       (err, doc) => {
         if (err) {
-          logger.error("Error while login", err);
+          logger.error("Error while finding user by email", err);
           callback(err, null);
         } else {
           logger.info("Email is matched", doc);

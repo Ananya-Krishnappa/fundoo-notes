@@ -181,4 +181,6 @@ module.exports = (app) => {
    *              description: Some server error
    */
   app.post("/login", userRegister.login);
+
+  app.post("/forgotPassword", userRegister.forgotPassword);
 };

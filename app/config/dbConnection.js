@@ -7,6 +7,10 @@ class DbConnectionHelper {
     mongoose
       .connect(process.env.DB_URL, {
         useNewUrlParser: true,
+        useUnifiedTopology: true,
+        useFindAndModify: false,
+        useCreateIndex: true,
+        autoIndex: true,
       })
       .then(() => {
         console.log("Successfully connected to the database");

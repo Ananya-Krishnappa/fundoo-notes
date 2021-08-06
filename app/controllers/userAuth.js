@@ -8,7 +8,7 @@
  * @version: 1.0.0
  * @since: 30-07-2021
  */
-const { validationUserRegistration, validateUserLogin } = require("../utils/validation.js");
+const { validationUserRegistration, validateUserLogin, validateForgotPassword } = require("../utils/validation.js");
 const authHelper = require("../utils/authentication.js");
 const service = require("../service/userAuth.js");
 const logger = require("../config/loggerConfig.js");
@@ -85,7 +85,7 @@ class UserRegisterController {
     try {
       const { error, value } = validateUserLogin.validate(req.body);
       if (error) {
-        logger.error("Error while authenticating the user", error);
+        logger.error("error.details[0].message", error);
         return res.status(400).json({
           success: false,
           message: error.details[0].message,
@@ -117,6 +117,44 @@ class UserRegisterController {
       res.status(500).json({
         success: false,
         message: "Some error occurred while authenticating the user",
+      });
+    }
+  };
+
+  forgotPassword = (req, res) => {
+    try {
+      const { error, value } = validateForgotPassword.validate(req.body);
+      if (error) {
+        logger.error("User email validation failed", error);
+        return res.status(400).json({
+          success: false,
+          message: error.details[0].message,
+        });
+      }
+      const userDetails = {
+        email: req.body.email,
+      };
+      service.forgotPassword(userDetails, (error, data) => {
+        if (error) {
+          logger.error("Error while getting the password reset link", error);
+          res.status(500).json({
+            success: false,
+            message: error,
+          });
+        } else {
+          logger.info("User registered successfully!", data);
+          res.status(200).json({
+            success: true,
+            message: "Password reset link sent to your mail!",
+            data: data,
+          });
+        }
+      });
+    } catch (error) {
+      logger.error("Error while getting the password reset link", error);
+      res.status(500).json({
+        success: false,
+        message: "Some error occurred while getting the password reset link",
       });
     }
   };

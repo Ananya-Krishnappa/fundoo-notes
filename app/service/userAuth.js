@@ -8,8 +8,11 @@
  * @since: 30-07-2021
  */
 const registerModel = require("../models/userAuth.js");
+const tokenModel = require("../models/token.js");
 const authHelper = require("../utils/authentication.js");
 const logger = require("../config/loggerConfig.js");
+const crypto = require("crypto");
+const bcrypt = require("bcrypt");
 
 class UserRegisterService {
   /**
@@ -35,14 +38,14 @@ class UserRegisterService {
    * @param {*} callback
    */
   login = (userCredentials, callback) => {
-    registerModel.login(userCredentials, (err, doc) => {
+    registerModel.findUserByEmail(userCredentials, (err, doc) => {
       if (err) {
-        logger.error("Error while registering the new user", err);
+        logger.error("Error while finding user by email", err);
         callback(err, null);
       } else {
         if (doc === null) {
-          logger.info("Email is incorrect", doc);
-          callback("Email is incorrect", null);
+          logger.info("User does not exist", doc);
+          callback("User does not exist", null);
         } else {
           if (authHelper.comparePassword(userCredentials.password, doc.password)) {
             logger.info("Token is generated", authHelper.generateToken(doc));
@@ -51,6 +54,55 @@ class UserRegisterService {
             logger.info("Please enter a valid password");
             callback("Please enter a valid password", null);
           }
+        }
+      }
+    });
+  };
+
+  forgotPassword = (userDetails, callback) => {
+    registerModel.findUserByEmail(userDetails, (err, doc) => {
+      if (err) {
+        logger.error("Error while finding user by email", err);
+        callback(err, null);
+      } else {
+        if (doc === null) {
+          logger.info("User does not exist", doc);
+          callback("User does not exist", null);
+        } else {
+          tokenModel.findTokenByUserId(doc._id, (tokenError, tokenDoc) => {
+            if (tokenError) {
+              logger.error("Error while finding token by user id", err);
+              callback(tokenError, null);
+            } else {
+              if (tokenDoc) {
+                tokenModel.deleteTokenByUserId(tokenDoc.userId, (tokenDeleteErr, tokenDeleteSuccess) => {
+                  if (tokenDeleteErr) {
+                    logger.error("Error while deleting the token by user id", err);
+                    callback(tokenDeleteErr, null);
+                  } else {
+                    logger.info("Token deleted");
+                  }
+                });
+              }
+            }
+          });
+          let resetToken = crypto.randomBytes(32).toString("hex");
+          const hash = bcrypt.hash(resetToken, Number(process.env.SALT_ROUNDS));
+          tokenModel.saveToken(doc._id, String(hash), (saveTokenErr, saveTokenSuccess) => {
+            if (saveTokenErr) {
+              logger.error("Error while saving the token", err);
+              callback(saveTokenErr, null);
+            } else {
+              const link = `${process.env.CLIENT_URL}/passwordReset?token=${resetToken}&id=${doc._id}`;
+              /*sendEmail(
+                doc.email,
+                "Password Reset Request",
+                { name: doc.firstName, link: link },
+                "./template/forgotPassword.handlebars"
+              );*/
+              callback(null, link);
+            }
+          });
         }
       }
     });
