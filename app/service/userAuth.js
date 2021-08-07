@@ -10,6 +10,8 @@
 const registerModel = require("../models/userAuth.js");
 const tokenModel = require("../models/token.js");
 const authHelper = require("../utils/authentication.js");
+const messages = require("../utils/messages.js");
+const sendEmail = require("../utils/email/sendEmail.js");
 const logger = require("../config/loggerConfig.js");
 const crypto = require("crypto");
 const bcrypt = require("bcrypt");
@@ -67,7 +69,7 @@ class UserRegisterService {
       } else {
         if (doc === null) {
           logger.info("User does not exist", doc);
-          callback("User does not exist", null);
+          callback(messages.USER_NOT_FOUND, null);
         } else {
           tokenModel.findTokenByUserId(doc._id, (tokenError, tokenDoc) => {
             if (tokenError) {
@@ -94,12 +96,12 @@ class UserRegisterService {
               callback(saveTokenErr, null);
             } else {
               const link = `${process.env.CLIENT_URL}/passwordReset?token=${resetToken}&id=${doc._id}`;
-              /*sendEmail(
+              sendEmail(
                 doc.email,
                 "Password Reset Request",
                 { name: doc.firstName, link: link },
                 "./template/forgotPassword.handlebars"
-              );*/
+              );
               callback(null, link);
             }
           });

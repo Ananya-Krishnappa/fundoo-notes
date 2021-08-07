@@ -12,6 +12,7 @@ const { validationUserRegistration, validateUserLogin, validateForgotPassword } 
 const authHelper = require("../utils/authentication.js");
 const service = require("../service/userAuth.js");
 const logger = require("../config/loggerConfig.js");
+const messages = require("../utils/messages.js");
 class UserRegisterController {
   /**
    * @description register user
@@ -136,13 +137,20 @@ class UserRegisterController {
       };
       service.forgotPassword(userDetails, (error, data) => {
         if (error) {
-          logger.error("Error while getting the password reset link", error);
+          if (error === messages.USER_NOT_FOUND) {
+            logger.error("User does not exist", error);
+            res.status(404).json({
+              success: false,
+              message: error,
+            });
+          }
+          logger.error("Error while sending the password reset link", error);
           res.status(500).json({
             success: false,
             message: error,
           });
         } else {
-          logger.info("User registered successfully!", data);
+          logger.info("Password link is sent successfully!", data);
           res.status(200).json({
             success: true,
             message: "Password reset link sent to your mail!",
@@ -151,7 +159,7 @@ class UserRegisterController {
         }
       });
     } catch (error) {
-      logger.error("Error while getting the password reset link", error);
+      logger.error("Error while sending the password reset link", error);
       res.status(500).json({
         success: false,
         message: "Some error occurred while getting the password reset link",
