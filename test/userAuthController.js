@@ -1,3 +1,12 @@
+/*
+ * Purpose: Provides the test cases for each functionality
+ *
+ * @description
+ *
+ * @author: Ananya K
+ * @version: 1.0.0
+ * @since: 09-08-2021
+ */
 const chai = require("chai");
 const sinon = require("sinon");
 const faker = require("faker");

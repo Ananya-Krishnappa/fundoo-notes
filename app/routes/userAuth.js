@@ -61,7 +61,19 @@
  *       example:
  *         email: Rita_Rutherford6@gmail.com
  *         password: BPG1_UAn8gt9LQx
- *
+ *     ForgotPassword:
+ *       type: object
+ *       required:
+ *         - email
+ *       properties:
+ *         link:
+ *           type: string
+ *           description: send password reset link to email
+ *         email:
+ *           type: string
+ *           descripton: email of user
+ *       example:
+ *         email: Rita_Rutherford6@gmail.com
  */
 
 const userRegister = require("../controllers/userAuth.js");
@@ -182,5 +194,40 @@ module.exports = (app) => {
    */
   app.post("/login", userRegister.login);
 
+  /**
+   * @openapi
+   *    tags:
+   *      name: ForgotPassword
+   *      description: Forgot Password
+   */
+
+  /**
+   * @openapi
+   *
+   * /forgotPassword:
+   *   post:
+   *     tags: [ForgotPassword]
+   *     summary: Forgot password link is sent to email
+   *     requestBody:
+   *       required: true
+   *       content:
+   *         application/json:
+   *           schema:
+   *             $ref: '#/components/schemas/ForgotPassword'
+   *     parameters:
+   *       - name: email
+   *         in: formData
+   *         required: true
+   *         type: string
+   *     responses:
+   *          201:
+   *              description: The password link is sent successfully
+   *              content:
+   *                  application/json:
+   *                      schema:
+   *                          $ref: '#/components/schemas/ForgotPassword'
+   *          500:
+   *              description: Some server error
+   */
   app.post("/forgotPassword", userRegister.forgotPassword);
 };

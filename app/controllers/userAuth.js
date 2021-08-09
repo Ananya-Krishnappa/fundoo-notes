@@ -122,6 +122,13 @@ class UserRegisterController {
     }
   };
 
+  /**
+   * @description Method to handle the forgot password api which sends link to the mail
+   * @param {*} req
+   * @param {*} res
+   * @returns
+   */
+
   forgotPassword = (req, res) => {
     try {
       const { error, value } = validateForgotPassword.validate(req.body);
@@ -137,18 +144,19 @@ class UserRegisterController {
       };
       service.forgotPassword(userDetails, (error, data) => {
         if (error) {
-          if (error === messages.USER_NOT_FOUND) {
+          if (error == messages.USER_NOT_FOUND) {
             logger.error("User does not exist", error);
             res.status(404).json({
               success: false,
               message: error,
             });
+          } else {
+            logger.error("Error while sending the password reset link", error);
+            res.status(500).json({
+              success: false,
+              message: error,
+            });
           }
-          logger.error("Error while sending the password reset link", error);
-          res.status(500).json({
-            success: false,
-            message: error,
-          });
         } else {
           logger.info("Password link is sent successfully!", data);
           res.status(200).json({

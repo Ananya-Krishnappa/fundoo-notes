@@ -1,0 +1,73 @@
+{
+  "createUser": {
+    "firstName": "Willa",
+    "lastName": "Bartell",
+    "phoneNumber": "(705) 995-6141",
+    "password": "BPG1_UAn8gt9LQx",
+    "email": "Rita_Rutherford6@gmail.com"
+  },
+
+  "invalidFirstname": {
+    "firstName": "",
+    "lastName": "Gowda",
+    "email": "ananyagowda@gmail.com",
+    "password": "ananya123!",
+    "phoneNumber": "8765212345"
+  },
+
+  "invalidLastname": {
+    "firstName": "Ananya",
+    "lastName": "",
+    "email": "ananyagowda@gmail.com",
+    "password": "ananya123!",
+    "phoneNumber": "8735712345"
+  },
+
+  "invalidEmail": {
+    "firstName": "Ananya",
+    "lastName": "Gowda",
+    "email": "ananyagowda@gmailcom",
+    "password": "veena@123",
+    "phoneNumber": "8764712345"
+  },
+
+  "invalidPassword": {
+    "firstName": "Ananya",
+    "lastName": "Gowda",
+    "email": "ananyagowda@gmail.com",
+    "password": "",
+    "phoneNumber": "8769712345"
+  },
+
+  "userLogin": {
+    "password": "BPG1_UAn8gt9LQx",
+    "email": "Sita_Rutherford6@gmail.com"
+  },
+
+  "invalidLoginEmail": {
+    "email": "veena123@gmail",
+    "password": "veena@123"
+  },
+
+  "invalidLoginPassword": {
+    "email": "Sita_Rutherford6@gmail.com",
+    "password": ""
+  },
+
+  "incorrectPassword": {
+    "email": "Sita_Rutherford6@gmail.com",
+    "password": "ananya123."
+  },
+
+  "forgotPassword": {
+    "email": "Sita_Rutherford6@gmail.com"
+  },
+
+  "invalidEmailForForgotPassword": {
+    "email": "ananya.gowda123@.oth"
+  },
+
+  "emailNotRegistered": {
+    "email": "ananya.gowda@gmail.com"
+  }
+}

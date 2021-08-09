@@ -7,7 +7,7 @@
  * @version: 1.0.0
  * @since: 30-07-2021
  */
-const registerModel = require("../models/userAuth.js");
+const userModel = require("../models/userAuth.js");
 const tokenModel = require("../models/token.js");
 const authHelper = require("../utils/authentication.js");
 const messages = require("../utils/messages.js");
@@ -23,7 +23,7 @@ class UserRegisterService {
    * @param {*} callback
    */
   register = (userDetails, callback) => {
-    registerModel.register(userDetails, (err, doc) => {
+    userModel.register(userDetails, (err, doc) => {
       if (err) {
         logger.error("Error while registering the new user", err);
         callback(err, null);
@@ -40,7 +40,7 @@ class UserRegisterService {
    * @param {*} callback
    */
   login = (userCredentials, callback) => {
-    registerModel.findUserByEmail(userCredentials, (err, doc) => {
+    userModel.findUserByEmail(userCredentials, (err, doc) => {
       if (err) {
         logger.error("Error while finding user by email", err);
         callback(err, null);
@@ -61,8 +61,15 @@ class UserRegisterService {
     });
   };
 
+  /**
+   * @description Method to handle the forgot password api which sends link to the mail
+   * @param {*} req
+   * @param {*} res
+   * @returns
+   */
+
   forgotPassword = (userDetails, callback) => {
-    registerModel.findUserByEmail(userDetails, (err, doc) => {
+    userModel.findUserByEmail(userDetails, (err, doc) => {
       if (err) {
         logger.error("Error while finding user by email", err);
         callback(err, null);

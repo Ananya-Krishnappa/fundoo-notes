@@ -83,11 +83,16 @@ class UserRegisterModel {
           logger.error("Error while finding user by email", err);
           callback(err, null);
         } else {
-          logger.info("Email is matched", doc);
           callback(null, doc);
         }
       }
     );
+  };
+
+  deleteUserByEmail = (email) => {
+    UserRegister.deleteOne({
+      email: email,
+    });
   };
 }
 module.exports = new UserRegisterModel();
