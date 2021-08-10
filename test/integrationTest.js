@@ -32,7 +32,6 @@ describe("POST-SUCCESS /register", () => {
       .post("/register")
       .send(userData)
       .end((error, res) => {
-        console.log("called first");
         if (error) {
           done(error);
         }
@@ -45,7 +44,6 @@ describe("POST-SUCCESS /register", () => {
   });
 
   after(() => {
-    console.log("called sec");
     userModel.deleteUserByEmail("Rita_Rutherford6@gmail.com");
   });
 });

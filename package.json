@@ -7,14 +7,9 @@
     "start": "nodemon server.js",
     "debug": "nodemon --inspect server.js",
     "lint": "eslint --ignore-path .gitignore .",
-    "test": "mocha",
-    "prepare": "concurrently \"npm run lint\" \"npm run test\"",
-    "coverage": "nyc mocha"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "npm prepare"
-    }
+    "test": "mocha --exit",
+    "coverage": "nyc mocha",
+    "prepare": "husky install"
   },
   "author": "",
   "license": "ISC",
@@ -42,9 +37,9 @@
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-prettier": "^3.4.0",
     "faker": "^5.5.3",
-    "husky": "^7.0.0",
     "mocha": "^9.0.3",
     "prettier": "2.3.2",
-    "sinon": "^11.1.2"
+    "sinon": "^11.1.2",
+    "husky": "^7.0.0"
   }
 }
