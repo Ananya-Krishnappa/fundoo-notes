@@ -7,8 +7,8 @@
     "start": "nodemon server.js",
     "debug": "nodemon --inspect server.js",
     "lint": "eslint --ignore-path .gitignore .",
-    "test": "mocha",
-    "prepare": "concurrently \"npm lint\" \"npm test\""
+    "test": "nyc mocha",
+    "prepare": "concurrently \"npm run lint\" \"npm run test\""
   },
   "husky": {
     "hooks": {
