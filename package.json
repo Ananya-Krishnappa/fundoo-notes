@@ -7,7 +7,16 @@
     "start": "nodemon server.js",
     "debug": "nodemon --inspect server.js",
     "lint": "eslint --ignore-path .gitignore .",
-    "test": "mocha"
+    "test": "mocha",
+    "prepare": "concurrently \"npm lint\" \"npm test\""
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.{js}": "npm prepare"
   },
   "author": "",
   "license": "ISC",
@@ -15,6 +24,7 @@
     "bcrypt": "^5.0.1",
     "body-parser": "^1.19.0",
     "chai-http": "^4.3.0",
+    "concurrently": "^6.2.1",
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
     "handlebars": "^4.7.7",
@@ -22,6 +32,7 @@
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.13.4",
     "nodemailer": "^6.6.3",
+    "nyc": "^15.1.0",
     "swagger-jsdoc": "^6.1.0",
     "swagger-ui-express": "^4.1.6",
     "winston": "^3.3.3"
@@ -33,6 +44,7 @@
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-prettier": "^3.4.0",
     "faker": "^5.5.3",
+    "husky": "^7.0.1",
     "mocha": "^9.0.3",
     "prettier": "2.3.2",
     "sinon": "^11.1.2"

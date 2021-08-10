@@ -144,7 +144,7 @@ class UserRegisterController {
       };
       service.forgotPassword(userDetails, (error, data) => {
         if (error) {
-          if (error == messages.USER_NOT_FOUND) {
+          if (error === messages.USER_NOT_FOUND) {
             logger.error("User does not exist", error);
             res.status(404).json({
               success: false,

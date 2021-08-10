@@ -90,9 +90,18 @@ class UserRegisterModel {
   };
 
   deleteUserByEmail = (email) => {
-    UserRegister.deleteOne({
-      email: email,
-    });
+    UserRegister.deleteOne(
+      {
+        email: email,
+      },
+      (err, doc) => {
+        if (err) {
+          logger.error("Error while deleting user by email", err);
+        } else {
+          logger.info("deleted user by email successfully", err);
+        }
+      }
+    );
   };
 }
 module.exports = new UserRegisterModel();

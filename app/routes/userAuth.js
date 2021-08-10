@@ -204,7 +204,7 @@ module.exports = (app) => {
   /**
    * @openapi
    *
-   * /forgotPassword:
+   * /forgotPassword :
    *   post:
    *     tags: [ForgotPassword]
    *     summary: Forgot password link is sent to email

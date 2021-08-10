@@ -8,13 +8,10 @@
  * @since: 30-07-2021
  */
 const userModel = require("../models/userAuth.js");
-const tokenModel = require("../models/token.js");
+const tokenService = require("./token.js");
 const authHelper = require("../utils/authentication.js");
 const messages = require("../utils/messages.js");
-const sendEmail = require("../utils/email/sendEmail.js");
 const logger = require("../config/loggerConfig.js");
-const crypto = require("crypto");
-const bcrypt = require("bcrypt");
 
 class UserRegisterService {
   /**
@@ -78,40 +75,8 @@ class UserRegisterService {
           logger.info("User does not exist", doc);
           callback(messages.USER_NOT_FOUND, null);
         } else {
-          tokenModel.findTokenByUserId(doc._id, (tokenError, tokenDoc) => {
-            if (tokenError) {
-              logger.error("Error while finding token by user id", err);
-              callback(tokenError, null);
-            } else {
-              if (tokenDoc) {
-                tokenModel.deleteTokenByUserId(tokenDoc.userId, (tokenDeleteErr, tokenDeleteSuccess) => {
-                  if (tokenDeleteErr) {
-                    logger.error("Error while deleting the token by user id", err);
-                    callback(tokenDeleteErr, null);
-                  } else {
-                    logger.info("Token deleted");
-                  }
-                });
-              }
-            }
-          });
-          let resetToken = crypto.randomBytes(32).toString("hex");
-          const hash = bcrypt.hash(resetToken, Number(process.env.SALT_ROUNDS));
-          tokenModel.saveToken(doc._id, String(hash), (saveTokenErr, saveTokenSuccess) => {
-            if (saveTokenErr) {
-              logger.error("Error while saving the token", err);
-              callback(saveTokenErr, null);
-            } else {
-              const link = `${process.env.CLIENT_URL}/passwordReset?token=${resetToken}&id=${doc._id}`;
-              sendEmail(
-                doc.email,
-                "Password Reset Request",
-                { name: doc.firstName, link: link },
-                "./template/forgotPassword.handlebars"
-              );
-              callback(null, link);
-            }
-          });
+          tokenService.findTokenByUserId(doc, callback);
+          tokenService.generateAndSaveToken(doc, callback);
         }
       }
     });
