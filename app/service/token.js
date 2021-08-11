@@ -21,7 +21,7 @@ class TokenService {
   findTokenByUserId = (doc, callback) => {
     tokenModel.findTokenByUserId(doc._id, (tokenError, tokenDoc) => {
       if (tokenError) {
-        logger.error("Error while finding token by user id", err);
+        logger.error("Error while finding token by user id", tokenError);
         callback(tokenError, null);
       } else {
         if (tokenDoc) {
@@ -39,7 +39,7 @@ class TokenService {
   deleteTokenByUserId = (tokenDoc, callback) => {
     tokenModel.deleteTokenByUserId(tokenDoc.userId, (tokenDeleteErr, tokenDeleteSuccess) => {
       if (tokenDeleteErr) {
-        logger.error("Error while deleting the token by user id", err);
+        logger.error("Error while deleting the token by user id", tokenDeleteErr);
         callback(tokenDeleteErr, null);
       } else {
         logger.info("Token deleted");
@@ -79,6 +79,40 @@ class TokenService {
       { name: doc.firstName, link: link },
       "./template/forgotPassword.handlebars"
     );
+  };
+
+  findTokenByUserIdAndCheckIfValid = (userDetails, callback) => {
+    tokenModel.findTokenByUserId(userDetails.userId, (tokenError, tokenDoc) => {
+      if (tokenError) {
+        logger.error("Error while finding token by user id", err);
+        callback(tokenError, null);
+      } else {
+        if (null === tokenDoc) {
+          const errorMessage = "Invalid or expired password reset token";
+          logger.error(errorMessage);
+          callback(errorMessage, null);
+        } else {
+          const isValid = bcrypt.compare(userDetails.token, tokenDoc.token);
+          if (!isValid) {
+            const errorMessage = "Invalid or expired password reset token";
+            logger.error(errorMessage);
+            callback(errorMessage, null);
+          }
+        }
+      }
+    });
+  };
+
+  deleteTokenPostPasswordReset = (tokenDoc, callback) => {
+    tokenModel.deleteTokenByUserId(tokenDoc.userId, (tokenDeleteErr, tokenDeleteSuccess) => {
+      if (tokenDeleteErr) {
+        logger.error("Error while deleting the token by user id", tokenDeleteErr);
+        callback(tokenDeleteErr, null);
+      } else {
+        logger.info("Token deleted");
+        callback(null, "Password reset successfull!");
+      }
+    });
   };
 }
 module.exports = new TokenService();

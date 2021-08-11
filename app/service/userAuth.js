@@ -12,6 +12,8 @@ const tokenService = require("./token.js");
 const authHelper = require("../utils/authentication.js");
 const messages = require("../utils/messages.js");
 const logger = require("../config/loggerConfig.js");
+const sendEmail = require("../utils/email/sendEmail.js");
+const bcrypt = require("bcrypt");
 
 class UserRegisterService {
   /**
@@ -47,7 +49,7 @@ class UserRegisterService {
           callback("User does not exist", null);
         } else {
           if (authHelper.comparePassword(userCredentials.password, doc.password)) {
-            logger.info("Token is generated", authHelper.generateToken(doc));
+            logger.info("Token is generated");
             callback(null, authHelper.generateToken(doc));
           } else {
             logger.info("Please enter a valid password");
@@ -81,5 +83,45 @@ class UserRegisterService {
       }
     });
   };
+
+  resetPassword = (userDetails, callback) => {
+    tokenService.findTokenByUserIdAndCheckIfValid(userDetails, callback);
+    const hash = bcrypt.hash(userDetails.newPassword, Number(process.env.SALT_ROUNDS));
+    userDetails.hash = hash;
+    userModel.updateNewPassword(userDetails, (err, doc) => {
+      if (err) {
+        logger.error("Error while updating the new password", err);
+        callback(err, null);
+      } else {
+        logger.info("Password reset");
+        userModel.findUserById(userDetails, (userErr, userDoc) => {
+          if (userErr) {
+            logger.error("Error while finding user by id", userErr);
+            callback(userErr, null);
+          } else {
+            if (userDoc === null) {
+              logger.info("User does not exist", userDoc);
+              callback("User does not exist", null);
+            } else {
+              this.sendPasswordResetConfirmation(userDoc);
+              tokenService.deleteTokenPostPasswordReset(userDetails, callback);
+            }
+          }
+        });
+      }
+    });
+  };
+
+  sendPasswordResetConfirmation = (userDoc) => {
+    sendEmail(
+      userDoc.email,
+      "Password Reset Successfully",
+      {
+        name: userDoc.firstName,
+      },
+      "./template/resetPassword.handlebars"
+    );
+  };
 }
+
 module.exports = new UserRegisterService();

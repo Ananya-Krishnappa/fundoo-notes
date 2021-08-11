@@ -89,6 +89,22 @@ class UserRegisterModel {
     );
   };
 
+  findUserById = (userDetails, callback) => {
+    UserRegister.findOne(
+      {
+        _id: userDetails.userId,
+      },
+      (err, doc) => {
+        if (err) {
+          logger.error("Error while finding user by id", err);
+          callback(err, null);
+        } else {
+          callback(null, doc);
+        }
+      }
+    );
+  };
+
   deleteUserByEmail = (email) => {
     UserRegister.deleteOne(
       {
@@ -99,6 +115,23 @@ class UserRegisterModel {
           logger.error("Error while deleting user by email", err);
         } else {
           logger.info("deleted user by email successfully", err);
+        }
+      }
+    );
+  };
+
+  updateNewPassword = (userDetails, callback) => {
+    UserRegister.updateOne(
+      { _id: userDetails.userId },
+      { $set: { password: String(userDetails.hash) } },
+      { new: true },
+      (err, doc) => {
+        if (err) {
+          logger.error("Error while updating the password", err);
+          callback(err, null);
+        } else {
+          logger.info("Password updated", doc);
+          callback(null, doc);
         }
       }
     );

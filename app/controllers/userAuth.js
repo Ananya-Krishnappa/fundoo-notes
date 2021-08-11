@@ -8,7 +8,12 @@
  * @version: 1.0.0
  * @since: 30-07-2021
  */
-const { validationUserRegistration, validateUserLogin, validateForgotPassword } = require("../utils/validation.js");
+const {
+  validationUserRegistration,
+  validateUserLogin,
+  validateForgotPassword,
+  validateResetPassword,
+} = require("../utils/validation.js");
 const authHelper = require("../utils/authentication.js");
 const service = require("../service/userAuth.js");
 const logger = require("../config/loggerConfig.js");
@@ -171,6 +176,46 @@ class UserRegisterController {
       res.status(500).json({
         success: false,
         message: "Some error occurred while getting the password reset link",
+      });
+    }
+  };
+
+  resetPassword = (req, res) => {
+    try {
+      const { error, value } = validateResetPassword.validate(req.body);
+      if (error) {
+        logger.error("Password validation failed", error);
+        return res.status(400).json({
+          success: false,
+          message: error.details[0].message,
+        });
+      }
+      const userDetails = {
+        userId: req.body.userId,
+        token: req.body.token,
+        newPassword: req.body.password,
+      };
+      service.resetPassword(userDetails, (error, data) => {
+        if (error) {
+          logger.error("Error while resetting the password", error);
+          res.status(500).json({
+            success: false,
+            message: error,
+          });
+        } else {
+          logger.info("Password reset is done successfully!", data);
+          res.status(200).json({
+            success: true,
+            message: "Password reset is done successfully!",
+            data: data,
+          });
+        }
+      });
+    } catch (error) {
+      logger.error("Error while resetting the password", error);
+      res.status(500).json({
+        success: false,
+        message: "Some error occurred while resetting the password",
       });
     }
   };

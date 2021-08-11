@@ -36,8 +36,15 @@ const validateForgotPassword = Joi.object({
     .pattern(new RegExp("^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:.[a-zA-Z0-9-]+)*$")),
 });
 
+const validateResetPassword = Joi.object({
+  password: Joi.string().required().pattern(new RegExp("^(?=.*[0-9])[a-zA-Z0-9!@_#$%^&*]{6,16}$")),
+  token: Joi.string().required(),
+  userId: Joi.string().required(),
+});
+
 module.exports = {
   validationUserRegistration,
   validateUserLogin,
   validateForgotPassword,
+  validateResetPassword,
 };

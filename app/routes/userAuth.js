@@ -1,3 +1,4 @@
+const userRegister = require("../controllers/userAuth.js");
 /**
  * @openapi
  * components:
@@ -75,8 +76,6 @@
  *       example:
  *         email: Rita_Rutherford6@gmail.com
  */
-
-const userRegister = require("../controllers/userAuth.js");
 
 module.exports = (app) => {
   /**
@@ -230,4 +229,6 @@ module.exports = (app) => {
    *              description: Some server error
    */
   app.post("/forgotPassword", userRegister.forgotPassword);
+
+  app.post("/resetPassword", userRegister.resetPassword);
 };
