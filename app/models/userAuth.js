@@ -89,6 +89,12 @@ class UserRegisterModel {
     );
   };
 
+  /**
+   * @description Method to find user by id
+   * @param {*} userCredentials, callback
+   * @param {*} res
+   * @returns
+   */
   findUserById = (userDetails, callback) => {
     UserRegister.findOne(
       {
@@ -105,6 +111,11 @@ class UserRegisterModel {
     );
   };
 
+  /**
+   * @description Method to delete the user by email
+   * @param {*} email
+   * @returns
+   */
   deleteUserByEmail = (email) => {
     UserRegister.deleteOne(
       {
@@ -120,6 +131,12 @@ class UserRegisterModel {
     );
   };
 
+  /**
+   * @description Method to update the new password
+   * @param {*} userCredentials, callback
+   * @param {*} res
+   * @returns
+   */
   updateNewPassword = (userDetails, callback) => {
     UserRegister.updateOne(
       { _id: userDetails.userId },

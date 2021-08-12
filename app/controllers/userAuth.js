@@ -180,6 +180,12 @@ class UserRegisterController {
     }
   };
 
+  /**
+   * @description Method to handle the reset password api which sends reset confirmation to the mail
+   * @param {*} userDetails
+   * @param {*} callback
+   * @returns
+   */
   resetPassword = (req, res) => {
     try {
       const { error, value } = validateResetPassword.validate(req.body);

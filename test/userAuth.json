@@ -69,5 +69,17 @@
 
   "emailNotRegistered": {
     "email": "ananya.gowda@gmail.com"
+  },
+
+  "resetPasswordValid": {
+    "password": "wA0wHcuRI6NZiW8",
+    "userId": "61129128fd7b4139c4d19f7d@11",
+    "token": "24aa73dbe462179bcfcd79ad2cb2b5e480e4f9b117109659c18d534ae365984d"
+  },
+
+  "invalidPasswordForResetPassword": {
+    "password": "wA0wHcuRI6NZiW8",
+    "userId": "61129128fd7b4139c4d19f7d@11",
+    "token": "24aa73dbe462179bcfcd79ad2cb2b5e480e4f9b117109659c18d534ae365984d"
   }
 }

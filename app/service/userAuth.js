@@ -84,6 +84,13 @@ class UserRegisterService {
     });
   };
 
+  /**
+   * @description Method to handle the reset password api which sends reset confirmation to the mail
+   * @param {*} userDetails
+   * @param {*} callback
+   * @returns
+   */
+
   resetPassword = (userDetails, callback) => {
     tokenService.findTokenByUserIdAndCheckIfValid(userDetails, callback);
     const hash = bcrypt.hash(userDetails.newPassword, Number(process.env.SALT_ROUNDS));
@@ -93,7 +100,7 @@ class UserRegisterService {
         logger.error("Error while updating the new password", err);
         callback(err, null);
       } else {
-        logger.info("Password reset");
+        logger.info("Password reset", doc);
         userModel.findUserById(userDetails, (userErr, userDoc) => {
           if (userErr) {
             logger.error("Error while finding user by id", userErr);
@@ -112,15 +119,24 @@ class UserRegisterService {
     });
   };
 
+  /**
+   * @description Method to send password reset confirmation to email
+   * @param {*} userDetails
+   * @param {*} callback
+   * @returns
+   */
   sendPasswordResetConfirmation = (userDoc) => {
-    sendEmail(
-      userDoc.email,
-      "Password Reset Successfully",
-      {
-        name: userDoc.firstName,
-      },
-      "./template/resetPassword.handlebars"
-    );
+    console.log("process.env.NODE_ENV", process.env.NODE_ENV);
+    if (process.env.NODE_ENV !== "test") {
+      sendEmail(
+        userDoc.email,
+        "Password Reset Successfully",
+        {
+          name: userDoc.firstName,
+        },
+        "./template/resetPassword.handlebars"
+      );
+    }
   };
 }
 

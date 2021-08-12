@@ -60,9 +60,14 @@ class TokenService {
         logger.error("Error while saving the token", err);
         callback(saveTokenErr, null);
       } else {
-        const link = `${process.env.CLIENT_URL}/passwordReset?token=${resetToken}&id=${doc._id}`;
+        const link = `${process.env.CLIENT_URL}/passwordReset`;
+        const forgotPasswordResponse = {
+          link: link,
+          resetToken: resetToken,
+          id: doc._id,
+        };
         this.sendPasswordResetLink(doc, link);
-        callback(null, link);
+        callback(null, forgotPasswordResponse);
       }
     });
   };
@@ -81,10 +86,17 @@ class TokenService {
     );
   };
 
+  /**
+   * @description Method to find token by user id and validate the token
+   * @param {*} userDetails
+   * @param {*} callback
+   * @returns
+   */
+
   findTokenByUserIdAndCheckIfValid = (userDetails, callback) => {
     tokenModel.findTokenByUserId(userDetails.userId, (tokenError, tokenDoc) => {
       if (tokenError) {
-        logger.error("Error while finding token by user id", err);
+        logger.error("Error while finding token by user id", tokenError);
         callback(tokenError, null);
       } else {
         if (null === tokenDoc) {
@@ -103,6 +115,13 @@ class TokenService {
     });
   };
 
+  /**
+   * @description Method to delete the token after resetting the token
+   * @param {*} userDetails
+   * @param {*} callback
+   * @returns
+   */
+
   deleteTokenPostPasswordReset = (tokenDoc, callback) => {
     tokenModel.deleteTokenByUserId(tokenDoc.userId, (tokenDeleteErr, tokenDeleteSuccess) => {
       if (tokenDeleteErr) {
@@ -110,7 +129,7 @@ class TokenService {
         callback(tokenDeleteErr, null);
       } else {
         logger.info("Token deleted");
-        callback(null, "Password reset successfull!");
+        callback(null, "Password reset successful!");
       }
     });
   };

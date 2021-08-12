@@ -75,6 +75,24 @@ const userRegister = require("../controllers/userAuth.js");
  *           descripton: email of user
  *       example:
  *         email: Rita_Rutherford6@gmail.com
+ *     ResetPassword:
+ *       type: object
+ *       required:
+ *         - password
+ *       properties:
+ *         userId:
+ *           type: string
+ *           description: userId of user
+ *         password:
+ *           type: string
+ *           descripton: password of user
+ *         token:
+ *           type: string
+ *           descripton: token generated for a user
+ *       example:
+ *         password: Rita_Ruthe@12!
+ *         token: 24aa73dbe462179bcfcd79ad2cb2b5e480e4f9b117109659c18d534ae365984d
+ *         userId: 61129128fd7b4139c4d19f7d
  */
 
 module.exports = (app) => {
@@ -118,27 +136,6 @@ module.exports = (app) => {
    *         application/json:
    *           schema:
    *             $ref: '#/components/schemas/Register'
-   *     parameters:
-   *       - name: firstName
-   *         in: formData
-   *         required: true
-   *         type: string
-   *       - name: lastName
-   *         in: formData
-   *         required: true
-   *         type: string
-   *       - name: email
-   *         in: formData
-   *         required: true
-   *         type: string
-   *       - name: phoneNumber
-   *         in: formData
-   *         required: true
-   *         type: string
-   *       - name: password
-   *         in: formData
-   *         required: true
-   *         type: string
    *     responses:
    *          201:
    *              description: The user is registered successfully
@@ -172,15 +169,6 @@ module.exports = (app) => {
    *             $ref: '#/components/schemas/Login'
    *     produces:
    *       - application/json
-   *     parameters:
-   *       - name: email
-   *         in: formData
-   *         required: true
-   *         type: string
-   *       - name: password
-   *         in: formData
-   *         required: true
-   *         type: string
    *     responses:
    *          200:
    *              description: Login successful
@@ -213,11 +201,6 @@ module.exports = (app) => {
    *         application/json:
    *           schema:
    *             $ref: '#/components/schemas/ForgotPassword'
-   *     parameters:
-   *       - name: email
-   *         in: formData
-   *         required: true
-   *         type: string
    *     responses:
    *          201:
    *              description: The password link is sent successfully
@@ -230,5 +213,35 @@ module.exports = (app) => {
    */
   app.post("/forgotPassword", userRegister.forgotPassword);
 
+  /**
+   * @openapi
+   *    tags:
+   *      name: ResetPassword
+   *      description: Reset Password
+   */
+
+  /**
+   * @openapi
+   *
+   * /resetPassword :
+   *   post:
+   *     tags: [ResetPassword]
+   *     summary: Reset password confirmation sent to email
+   *     requestBody:
+   *       required: true
+   *       content:
+   *         application/json:
+   *           schema:
+   *             $ref: '#/components/schemas/ResetPassword'
+   *     responses:
+   *          201:
+   *              description: Reset password confirmation is sent to email successfully
+   *              content:
+   *                  application/json:
+   *                      schema:
+   *                          $ref: '#/components/schemas/ResetPassword'
+   *          500:
+   *              description: Some server error
+   */
   app.post("/resetPassword", userRegister.resetPassword);
 };
