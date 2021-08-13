@@ -13,10 +13,12 @@ const faker = require("faker");
 const expect = chai.expect;
 const userAuthController = require("../app/controllers/userAuth");
 const userAuthService = require("../app/service/userAuth");
+const testData = require("./utils/testData");
 describe("User Authentication", function () {
   describe("User Registration", function () {
     let status, json, res;
     beforeEach(() => {
+      sinon.restore();
       status = sinon.stub();
       json = sinon.spy();
       res = {
@@ -81,25 +83,15 @@ describe("User Authentication", function () {
           email: faker.internet.email(),
         },
       };
-      stubValue = {
-        id: faker.datatype.uuid(),
-        firstName: faker.name.firstName(),
-        lastName: faker.name.lastName(),
-        phoneNumber: faker.phone.phoneNumber(),
-        password: faker.internet.password(),
-        email: faker.internet.email(),
-        createdAt: faker.date.past(),
-        updatedAt: faker.date.past(),
-      };
       const registerStub = sinon.stub(userAuthService, "register");
-      registerStub.yields(null, stubValue);
+      registerStub.yields(null, testData.userData);
       userAuthController.register(req, res);
       registerStub.restore();
       expect(registerStub.calledOnce).to.be.true;
       expect(status.calledOnce).to.be.true;
       expect(status.args[0][0]).to.equal(201);
       expect(json.calledOnce).to.be.true;
-      expect(json.args[0][0].data).to.equal(stubValue);
+      expect(json.args[0][0].data).to.equal(testData.userData);
     });
 
     it("givenAnEmptyJsonObjectInReqBody_whenInvokedLoginFunc_thenReturnErrorMessage", function () {

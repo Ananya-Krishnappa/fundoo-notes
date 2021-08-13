@@ -80,8 +80,9 @@ class UserRegisterModel {
       },
       (err, doc) => {
         if (err) {
-          logger.error("Error while finding user by email", err);
-          callback(err, null);
+          const error = "Error connecting to database";
+          logger.error(error, err);
+          callback(error, null);
         } else {
           callback(null, doc);
         }
@@ -102,8 +103,9 @@ class UserRegisterModel {
       },
       (err, doc) => {
         if (err) {
-          logger.error("Error while finding user by id", err);
-          callback(err, null);
+          const error = "Error connecting to database";
+          logger.error(error, err);
+          callback(error, null);
         } else {
           callback(null, doc);
         }
@@ -144,8 +146,9 @@ class UserRegisterModel {
       { new: true },
       (err, doc) => {
         if (err) {
-          logger.error("Error while updating the password", err);
-          callback(err, null);
+          const error = "Error connecting to database";
+          logger.error(error, err);
+          callback(error, null);
         } else {
           logger.info("Password updated", doc);
           callback(null, doc);

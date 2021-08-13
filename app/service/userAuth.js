@@ -107,8 +107,8 @@ class UserRegisterService {
             callback(userErr, null);
           } else {
             if (userDoc === null) {
-              logger.info("User does not exist", userDoc);
-              callback("User does not exist", null);
+              logger.info(messages.USER_NOT_FOUND);
+              callback(messages.USER_NOT_FOUND, null);
             } else {
               this.sendPasswordResetConfirmation(userDoc);
               tokenService.deleteTokenPostPasswordReset(userDetails, callback);

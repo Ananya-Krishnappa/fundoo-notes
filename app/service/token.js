@@ -66,7 +66,7 @@ class TokenService {
           resetToken: resetToken,
           id: doc._id,
         };
-        this.sendPasswordResetLink(doc, link);
+        this.sendPasswordResetLink(doc, link, resetToken);
         callback(null, forgotPasswordResponse);
       }
     });
@@ -77,11 +77,11 @@ class TokenService {
    * @param {*} doc
    * @param {*} link
    */
-  sendPasswordResetLink = (doc, link) => {
+  sendPasswordResetLink = (doc, link, resetToken) => {
     sendEmail(
       doc.email,
       "Password Reset Request",
-      { name: doc.firstName, link: link },
+      { name: doc.firstName, link: link, resetToken: resetToken, id: doc._id },
       "./template/forgotPassword.handlebars"
     );
   };
