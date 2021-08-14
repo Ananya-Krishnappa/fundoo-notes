@@ -26,7 +26,6 @@ class UserRegisterController {
    */
   register = (req, res) => {
     try {
-      // destructuring
       if (Object.keys(req.body).length === 0 && req.body.constructor === Object) {
         logger.error(
           "Invalid Params. Usage: { 'firstName': '<first_name>','lastName': '<last_name>','email': '<email>','phoneNumber': '<phone_number>','password': '<password>'}"

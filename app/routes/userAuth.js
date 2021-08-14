@@ -1,4 +1,5 @@
 const userRegister = require("../controllers/userAuth.js");
+const notes = require("../controllers/note.js");
 /**
  * @openapi
  * components:
@@ -244,4 +245,27 @@ module.exports = (app) => {
    *              description: Some server error
    */
   app.post("/resetPassword", userRegister.resetPassword);
+
+  app.post("/notes", notes.create);
+
+  // Retrieve all Notes
+  app.get("/notes", notes.findAll);
+
+  // Retrieve a single Note with noteId
+  app.get("/notes/:noteId", notes.findOne);
+
+  // Update a Note with noteId
+  app.put("/notes/:noteId", notes.update);
+
+  // Delete a Note with noteId
+  app.put("/trashNote/:noteId", notes.trash);
+
+  // Delete a Note forever with noteId
+  app.delete("/notes/:noteId", notes.deleteForever);
+
+  // Archive a Note with noteId
+  app.put("/archiveNote/:noteId", notes.archive);
+
+  // Pin a Note with noteId
+  app.put("/pinNote/:noteId", notes.pin);
 };

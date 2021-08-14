@@ -42,9 +42,28 @@ const validateResetPassword = Joi.object({
   userId: Joi.string().required(),
 });
 
+const validateCreateNote = Joi.object({
+  title: Joi.string().max(50).required(),
+  description: Joi.string().max(100).required(),
+  isPinned: Joi.boolean().required(),
+});
+
+const validateDeleteNote = Joi.object({
+  isTrashed: Joi.boolean().required(),
+});
+const validateArchiveNote = Joi.object({
+  isArchived: Joi.boolean().required(),
+});
+const validatePinNote = Joi.object({
+  isPinned: Joi.boolean().required(),
+});
 module.exports = {
   validationUserRegistration,
   validateUserLogin,
   validateForgotPassword,
   validateResetPassword,
+  validateCreateNote,
+  validateDeleteNote,
+  validateArchiveNote,
+  validatePinNote,
 };
