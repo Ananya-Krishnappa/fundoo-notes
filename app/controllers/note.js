@@ -1,3 +1,12 @@
+/*
+ * Purpose: Provides implementation for the mapped request and forwards the request to the service layer.
+ * Also, returns the response to the client
+ * @description
+ *
+ * @author: Ananya K
+ * @version: 1.0.0
+ * @since: 14-08-2021
+ */
 const service = require("../service/note.js");
 const logger = require("../config/loggerConfig.js");
 const messages = require("../utils/messages.js");
@@ -9,7 +18,11 @@ const {
 } = require("../utils/validation.js");
 
 class NoteController {
-  // Create and Save a new Note
+  /**
+   * @description create and save note
+   * @param {*} request from client
+   * @param {*} response to client
+   */
   create = (req, res) => {
     try {
       if (Object.keys(req.body).length === 0 && req.body.constructor === Object) {
@@ -54,7 +67,11 @@ class NoteController {
     }
   };
 
-  // Retrieve and return all notes from the database.
+  /**
+   * @description Retrieve and return all notes from the database.
+   * @param {*} request from client
+   * @param {*} response to client
+   */
   findAll = (req, res) => {
     try {
       service.findAllNotes((error, data) => {
@@ -80,7 +97,11 @@ class NoteController {
     }
   };
 
-  // Find a single note with a noteId
+  /**
+   * @description Find a single note with a noteId
+   * @param {*} request from client
+   * @param {*} response to client
+   */
   findOne = (req, res) => {
     try {
       service.findNoteById(req.params.noteId, (error, data) => {
@@ -106,7 +127,11 @@ class NoteController {
     }
   };
 
-  // Update a note identified by the noteId in the request
+  /**
+   * @description Update a note identified by the noteId in the request
+   * @param {*} request from client
+   * @param {*} response to client
+   */
   update = (req, res) => {
     try {
       const { error, value } = validateCreateNote.validate(req.body);
@@ -146,7 +171,11 @@ class NoteController {
     }
   };
 
-  // Trash a note with the specified noteId in the request
+  /**
+   * @description  Trash a note with the specified noteId in the request
+   * @param {*} request from client
+   * @param {*} response to client
+   */
   trash = (req, res) => {
     try {
       const { error, value } = validateDeleteNote.validate(req.body);
@@ -184,7 +213,11 @@ class NoteController {
     }
   };
 
-  // Delete a note forever with the specified noteId in the request
+  /**
+   * @description  Delete a note forever with the specified noteId in the request
+   * @param {*} request from client
+   * @param {*} response to client
+   */
   deleteForever = (req, res) => {
     try {
       // Find note and update it with the request body
@@ -217,6 +250,12 @@ class NoteController {
       });
     }
   };
+
+  /**
+   * @description  Archive a note
+   * @param {*} request from client
+   * @param {*} response to client
+   */
   archive = (req, res) => {
     try {
       const { error, value } = validateArchiveNote.validate(req.body);
@@ -253,6 +292,12 @@ class NoteController {
       });
     }
   };
+
+  /**
+   * @description Pin a note
+   * @param {*} request from client
+   * @param {*} response to client
+   */
   pin = (req, res) => {
     try {
       const { error, value } = validatePinNote.validate(req.body);

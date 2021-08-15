@@ -4,12 +4,22 @@ const NoteSchema = mongoose.Schema(
   {
     title: String,
     description: String,
-    isPinned: Boolean,
-    isArchived: Boolean,
-    isTrashed: Boolean,
+    isPinned: {
+      type: Boolean,
+      default: false,
+    },
+    isArchived: {
+      type: Boolean,
+      default: false,
+    },
+    isTrashed: {
+      type: Boolean,
+      default: false,
+    },
   },
   {
     timestamps: true,
+    versionKey: false,
   }
 );
 

@@ -1,8 +1,22 @@
+/*
+ * Purpose: Provides the business logic for each functionality
+ *
+ * @description
+ *
+ * @author: Ananya K
+ * @version: 1.0.0
+ * @since: 30-07-2021
+ */
 const noteModel = require("../models/note.js");
 const logger = require("../config/loggerConfig.js");
 const messages = require("../utils/messages.js");
 
 class NoteService {
+  /**
+   * @description create a note
+   * @param {*} userDetails
+   * @param {*} callback
+   */
   createNote = (note, callback) => {
     noteModel.createNote(note, (err, doc) => {
       if (err) {
@@ -15,6 +29,11 @@ class NoteService {
     });
   };
 
+  /**
+   * @description Retrieve all the notes
+   * @param {*} userDetails
+   * @param {*} callback
+   */
   findAllNotes = (callback) => {
     noteModel.findAllNotes((err, doc) => {
       if (err) {
@@ -27,6 +46,11 @@ class NoteService {
     });
   };
 
+  /**
+   * @description Retrieve note by id
+   * @param {*} userDetails
+   * @param {*} callback
+   */
   findNoteById = (noteId, callback) => {
     noteModel.findNoteById(noteId, (err, doc) => {
       if (err) {
@@ -38,7 +62,11 @@ class NoteService {
       }
     });
   };
-
+  /**
+   * @description update note by id
+   * @param {*} userDetails
+   * @param {*} callback
+   */
   updateNoteById = (noteId, note, callback) => {
     noteModel.updateNoteById(noteId, note, (err, doc) => {
       if (err) {
@@ -50,7 +78,11 @@ class NoteService {
       }
     });
   };
-
+  /**
+   * @description delete note by id
+   * @param {*} userDetails
+   * @param {*} callback
+   */
   deleteNoteById = (noteId, callback) => {
     noteModel.deleteNoteById(noteId, (err, doc) => {
       if (err) {
