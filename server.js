@@ -5,6 +5,7 @@ const swaggerUi = require("swagger-ui-express");
 const { swaggerSpecs } = require("./swagger/swaggerSpecification.js");
 const dbConnectionHelper = require("./app/config/dbConnection.js");
 const logger = require("./app/config/loggerConfig");
+const auth = require("./authMiddleware");
 // create express app
 const app = express();
 
@@ -27,7 +28,7 @@ app.use(
 app.use(bodyParser.json());
 
 dbConnectionHelper.connectToDb();
-
+app.use(auth);
 // Require Notes routes
 require("./app/routes/userAuth.js")(app);
 
