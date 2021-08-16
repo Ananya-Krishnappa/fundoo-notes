@@ -73,17 +73,25 @@ class NoteController {
    * @param {*} response to client
    */
   findAll = (req, res) => {
+    const reqParam = {
+      isTrashed: req.query.isTrashed || false,
+      isArchived: req.query.isArchived || false,
+    };
     try {
-      service.findAllNotes((error, data) => {
+      service.findAllNotes(reqParam, (error, data) => {
         if (error) {
           res.status(500).send({
             success: false,
             message: "Some error occurred while retrieving note",
           });
         } else {
+          let successMessage = "Notes retrieved successfully!";
+          if (data !== null && data.length === 0) {
+            successMessage = "No notes found for the matching criteria";
+          }
           res.status(200).send({
             success: true,
-            message: "Notes retrieved successfully!",
+            message: successMessage,
             data: data,
           });
         }

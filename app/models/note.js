@@ -45,8 +45,8 @@ class NoteModel {
     });
   };
 
-  findAllNotes = (callback) => {
-    Note.find((err, doc) => {
+  findAllNotes = (reqParam, callback) => {
+    Note.find({ isTrashed: reqParam.isTrashed, isArchived: reqParam.isArchived }, (err, doc) => {
       if (err) {
         logger.error("Error while finding the notes", err);
         callback(err, null);

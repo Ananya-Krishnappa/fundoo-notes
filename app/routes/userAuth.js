@@ -94,6 +94,61 @@ const notes = require("../controllers/note.js");
  *         password: Rita_Ruthe@12!
  *         token: 24aa73dbe462179bcfcd79ad2cb2b5e480e4f9b117109659c18d534ae365984d
  *         userId: 61129128fd7b4139c4d19f7d
+ *     Note:
+ *       type: object
+ *       required:
+ *         - title
+ *         - description
+ *       properties:
+ *         title:
+ *           type: string
+ *           description: title of note
+ *         description:
+ *           type: string
+ *           description: description of note
+ *         isPinned:
+ *           type: boolean
+ *           description: note is pinned or not
+ *         isArchived:
+ *           type: boolean
+ *           description: note is archived or not
+ *         isTrashed:
+ *           type: boolean
+ *           description: note is trashed or not
+ *       example:
+ *         title: hello note
+ *         description: creating my first note
+ *         isPinned: false
+ *     TrashNote:
+ *       type: object
+ *       required:
+ *         - isTrashed
+ *       properties:
+ *         isTrashed:
+ *           type: boolean
+ *           description: note is trashed or not
+ *       example:
+ *         isTrashed: false
+ *     ArchiveNote:
+ *       type: object
+ *       required:
+ *         - isArchived
+ *       properties:
+ *         isArchived:
+ *           type: boolean
+ *           description: note is archived or not
+ *       example:
+ *         isArchived: false
+ *     PinNote:
+ *       type: object
+ *       required:
+ *         - isPinned
+ *       properties:
+ *         isPinned:
+ *           type: boolean
+ *           description: note is pinned or not
+ *       example:
+ *         isPinned: false
  */
 
 module.exports = (app) => {
@@ -122,14 +177,14 @@ module.exports = (app) => {
   /**
    * @openapi
    *  tags:
-   *    name: Register
+   *    name: Authentication
    *    description: Register a user
    */
   /**
    * @openapi
    * /register:
    *   post:
-   *     tags: [Register]
+   *     tags: [Authentication]
    *     summary: Register a new user
    *     requestBody:
    *       required: true
@@ -151,17 +206,11 @@ module.exports = (app) => {
 
   /**
    * @openapi
-   *    tags:
-   *      name: Login
-   *      description: User login
-   */
-  /**
-   * @openapi
    *
    * /login:
    *   post:
    *     summary: User login
-   *     tags: [Login]
+   *     tags: [Authentication]
    *     requestBody:
    *       required: true
    *       content:
@@ -184,17 +233,10 @@ module.exports = (app) => {
 
   /**
    * @openapi
-   *    tags:
-   *      name: ForgotPassword
-   *      description: Forgot Password
-   */
-
-  /**
-   * @openapi
    *
    * /forgotPassword :
    *   post:
-   *     tags: [ForgotPassword]
+   *     tags: [Authentication]
    *     summary: Forgot password link is sent to email
    *     requestBody:
    *       required: true
@@ -216,17 +258,10 @@ module.exports = (app) => {
 
   /**
    * @openapi
-   *    tags:
-   *      name: ResetPassword
-   *      description: Reset Password
-   */
-
-  /**
-   * @openapi
    *
    * /resetPassword :
    *   post:
-   *     tags: [ResetPassword]
+   *     tags: [Authentication]
    *     summary: Reset password confirmation sent to email
    *     requestBody:
    *       required: true
@@ -246,26 +281,243 @@ module.exports = (app) => {
    */
   app.post("/resetPassword", userRegister.resetPassword);
 
+  /**
+   * @openapi
+   *  tags:
+   *    name: Note
+   *    description: Note APIs
+   */
+  /**
+   * @openapi
+   * /notes:
+   *   post:
+   *     tags: [Note]
+   *     summary: Create a note
+   *     requestBody:
+   *       required: true
+   *       content:
+   *         application/json:
+   *           schema:
+   *             $ref: '#/components/schemas/Note'
+   *     responses:
+   *          201:
+   *              description: The note is created successfully
+   *              content:
+   *                  application/json:
+   *                      schema:
+   *                          $ref: '#/components/schemas/Note'
+   *          500:
+   *              description: Some server error
+   */
   app.post("/notes", notes.create);
 
-  // Retrieve all Notes
+  /**
+   * @openapi
+   * /notes:
+   *   get:
+   *     tags: [Note]
+   *     summary: Retrieve all notes
+   *     parameters:
+   *      - in: query
+   *        name: isTrashed
+   *        schema:
+   *          type: boolean
+   *        required: true
+   *        description: isTrashed
+   *      - in: query
+   *        name: isArchived
+   *        schema:
+   *          type: boolean
+   *        required: true
+   *        description: isArchived
+   *     responses:
+   *          200:
+   *              description: The notes are retrieved successfully
+   *              content:
+   *                  application/json:
+   *                      schema:
+   *                          $ref: '#/components/schemas/Note'
+   *          500:
+   *              description: Some server error
+   */
   app.get("/notes", notes.findAll);
 
-  // Retrieve a single Note with noteId
+  /**
+   * @openapi
+   * /notes/{noteId}:
+   *   get:
+   *     tags: [Note]
+   *     summary: Retrieve a single note
+   *     parameters:
+   *      - in: path
+   *        name: noteId
+   *        required: true
+   *        schema:
+   *          type: string
+   *        description: The user ID
+   *     responses:
+   *          200:
+   *              description: The note is retrieved successfully
+   *              content:
+   *                  application/json:
+   *                      schema:
+   *                          $ref: '#/components/schemas/Note'
+   *          500:
+   *              description: Some server error
+   */
   app.get("/notes/:noteId", notes.findOne);
 
-  // Update a Note with noteId
+  /**
+   * @openapi
+   *
+   * /notes/{noteId} :
+   *   put:
+   *     tags: [Note]
+   *     summary: Update a note
+   *     parameters:
+   *      - in: path
+   *        name: noteId
+   *        required: true
+   *        schema:
+   *          type: string
+   *        description: The user ID
+   *     requestBody:
+   *       required: true
+   *       content:
+   *         application/json:
+   *           schema:
+   *             $ref: '#/components/schemas/Note'
+   *     responses:
+   *          200:
+   *              description: Updated a note successfully
+   *              content:
+   *                  application/json:
+   *                      schema:
+   *                          $ref: '#/components/schemas/Note'
+   *          500:
+   *              description: Some server error
+   */
   app.put("/notes/:noteId", notes.update);
 
-  // Delete a Note with noteId
+  /**
+   * @openapi
+   *
+   * /trashNote/{noteId}:
+   *   put:
+   *     tags: [Note]
+   *     summary: Trash/Restore a note
+   *     parameters:
+   *      - in: path
+   *        name: noteId
+   *        required: true
+   *        schema:
+   *          type: string
+   *        description: The user ID
+   *     requestBody:
+   *       required: true
+   *       content:
+   *         application/json:
+   *           schema:
+   *             $ref: '#/components/schemas/TrashNote'
+   *     responses:
+   *          200:
+   *              description: Trashed a note successfully
+   *              content:
+   *                  application/json:
+   *                      schema:
+   *                          $ref: '#/components/schemas/TrashNote'
+   *          500:
+   *              description: Some server error
+   */
   app.put("/trashNote/:noteId", notes.trash);
 
-  // Delete a Note forever with noteId
+  /**
+   * @openapi
+   *
+   * /notes/{noteId}:
+   *   delete:
+   *     tags: [Note]
+   *     summary: Delete a note permanently
+   *     parameters:
+   *      - in: path
+   *        name: noteId
+   *        required: true
+   *        schema:
+   *          type: string
+   *        description: The user ID
+   *     responses:
+   *          200:
+   *              description: Deleted the note permanently
+   *              content:
+   *                  application/json:
+   *                      schema:
+   *                          $ref: '#/components/schemas/Note'
+   *          500:
+   *              description: Some server error
+   */
   app.delete("/notes/:noteId", notes.deleteForever);
 
-  // Archive a Note with noteId
+  /**
+   * @openapi
+   *
+   * /archiveNote/{noteId}:
+   *   put:
+   *     tags: [Note]
+   *     summary: Archive/Unarchive a note
+   *     parameters:
+   *      - in: path
+   *        name: noteId
+   *        required: true
+   *        schema:
+   *          type: string
+   *        description: The user ID
+   *     requestBody:
+   *       required: true
+   *       content:
+   *         application/json:
+   *           schema:
+   *             $ref: '#/components/schemas/ArchiveNote'
+   *     responses:
+   *          201:
+   *              description: Archived a note
+   *              content:
+   *                  application/json:
+   *                      schema:
+   *                          $ref: '#/components/schemas/ArchiveNote'
+   *          500:
+   *              description: Some server error
+   */
   app.put("/archiveNote/:noteId", notes.archive);
 
-  // Pin a Note with noteId
+  /**
+   * @openapi
+   *
+   * /pinNote/{noteId}:
+   *   put:
+   *     tags: [Note]
+   *     summary: Pin/Unpin a note
+   *     parameters:
+   *      - in: path
+   *        name: noteId
+   *        required: true
+   *        schema:
+   *          type: string
+   *        description: The user ID
+   *     requestBody:
+   *       required: true
+   *       content:
+   *         application/json:
+   *           schema:
+   *             $ref: '#/components/schemas/PinNote'
+   *     responses:
+   *          201:
+   *              description: Pin a note
+   *              content:
+   *                  application/json:
+   *                      schema:
+   *                          $ref: '#/components/schemas/PinNote'
+   *          500:
+   *              description: Some server error
+   */
   app.put("/pinNote/:noteId", notes.pin);
 };

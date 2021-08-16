@@ -34,8 +34,8 @@ class NoteService {
    * @param {*} userDetails
    * @param {*} callback
    */
-  findAllNotes = (callback) => {
-    noteModel.findAllNotes((err, doc) => {
+  findAllNotes = (reqParam, callback) => {
+    noteModel.findAllNotes(reqParam, (err, doc) => {
       if (err) {
         logger.error("Error while finding notes", err);
         callback(err, null);
