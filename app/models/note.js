@@ -30,7 +30,7 @@ const NoteSchema = mongoose.Schema(
 const Note = mongoose.model("Note", NoteSchema);
 
 class NoteModel {
-  createNote = (note, callback) => {
+  createNote = (note) => {
     const newNote = new Note({
       title: note.title,
       description: note.description,
@@ -39,73 +39,66 @@ class NoteModel {
       isTrashed: false,
       userId: note.userId,
     });
-    newNote.save((err, doc) => {
-      if (err) {
+    return newNote
+      .save()
+      .then((note) => {
+        logger.info("UserNote saved successfully", note);
+        return note;
+      })
+      .catch((err) => {
         logger.error("Error while saving the new note", err);
-        callback(err, null);
-      } else {
-        logger.info("UserNote saved successfully", doc);
-        callback(null, doc);
-      }
-    });
+        throw err;
+      });
   };
 
-  findAllNotes = (reqParam, callback) => {
-    Note.find(
-      { isTrashed: reqParam.isTrashed, isArchived: reqParam.isArchived, userId: reqParam.userId },
-      (err, doc) => {
-        if (err) {
-          logger.error("Error while finding the notes", err);
-          callback(err, null);
-        } else {
-          logger.info("Note found successfully", doc);
-          callback(null, doc);
-        }
-      }
-    );
+  findAllNotes = (reqParam) => {
+    return Note.find({ isTrashed: reqParam.isTrashed, isArchived: reqParam.isArchived, userId: reqParam.userId })
+      .then((notes) => {
+        logger.info("Notes found successfully", notes);
+        return notes;
+      })
+      .catch((error) => {
+        logger.error("Error while finding the notes", error);
+        throw error;
+      });
   };
 
-  findNoteById = (noteId, callback) => {
-    Note.findById(noteId, (err, doc) => {
-      if (err) {
-        logger.error("Error while finding the note by id", err);
-        callback(err, null);
-      } else {
-        logger.info("Note found successfully", doc);
-        callback(null, doc);
-      }
-    });
+  findNoteById = (noteId) => {
+    return Note.findById(noteId)
+      .then((note) => {
+        logger.info("Note found successfully", note);
+        return note;
+      })
+      .catch((error) => {
+        logger.error("Error while finding the note by id", error);
+        throw error;
+      });
   };
 
-  updateNoteById = (noteId, note, callback) => {
-    Note.findByIdAndUpdate(
-      noteId,
-      note,
-      {
-        new: true,
-      },
-      (err, doc) => {
-        if (err) {
-          logger.error("Error while updating the note by id", err);
-          callback(err, null);
-        } else {
-          logger.info("Note updated successfully", doc);
-          callback(null, doc);
-        }
-      }
-    );
+  updateNoteById = (noteId, note) => {
+    return Note.findByIdAndUpdate(noteId, note, {
+      new: true,
+    })
+      .then((note) => {
+        logger.info("Note updated successfully", note);
+        return note;
+      })
+      .catch((err) => {
+        logger.error("Error while updating the note by id", err);
+        throw err;
+      });
   };
 
-  deleteNoteById = (noteId, callback) => {
-    Note.findByIdAndRemove(noteId, (err, doc) => {
-      if (err) {
-        logger.error("Error while deleting the note by id", err);
-        callback(err, null);
-      } else {
-        logger.info("Note deleted successfully", doc);
-        callback(null, doc);
-      }
-    });
+  deleteNoteById = (noteId) => {
+    return Note.findByIdAndRemove(noteId)
+      .then((note) => {
+        logger.info("Note deleted successfully", note);
+        return note;
+      })
+      .catch((error) => {
+        logger.error("Error while deleting the note by id", error);
+        throw error;
+      });
   };
 }
 module.exports = new NoteModel();

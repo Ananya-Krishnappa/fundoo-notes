@@ -50,20 +50,22 @@ class NoteController {
         isPinned: req.body.isPinned || false,
         userId: req.body.userId,
       };
-      service.createNote(note, (error, data) => {
-        if (error) {
-          res.status(500).send({
-            success: false,
-            message: "Some error occurred while creating note",
-          });
-        } else {
+      service
+        .createNote(note)
+        .then((note) => {
           res.status(200).send({
             success: true,
             message: "Note created successfully!",
-            data: data,
+            data: note,
           });
-        }
-      });
+        })
+        .catch((err) => {
+          logger.error("Error while creating the new note", err);
+          res.status(500).json({
+            success: false,
+            message: err,
+          });
+        });
     } catch (error) {
       logger.error("Error while creating the new note", error);
       res.status(500).json({
@@ -79,30 +81,34 @@ class NoteController {
    * @param {*} response to client
    */
   findAll = (req, res) => {
-    const reqParam = {
-      userId: req.body.userId,
-      isTrashed: req.body.isTrashed || false,
-      isArchived: req.body.isArchived || false,
-    };
     try {
-      service.findAllNotes(reqParam, (error, data) => {
-        if (error) {
+      const reqParam = {
+        userId: req.body.userId,
+        isTrashed: req.body.isTrashed || false,
+        isArchived: req.body.isArchived || false,
+      };
+      service
+        .findAllNotes(reqParam)
+        .then((notes) => {
+          if (!notes) {
+            return res.status(404).send({
+              success: false,
+              message: "Notes not found",
+            });
+          }
+          res.send({
+            success: true,
+            message: "Notes retrieved successfully!",
+            data: notes,
+          });
+        })
+        .catch((err) => {
+          logger.error("Error while finding notes", err);
           res.status(500).send({
             success: false,
-            message: "Some error occurred while retrieving note",
+            message: "Some error occurred while retrieving notes",
           });
-        } else {
-          let successMessage = "Notes retrieved successfully!";
-          if (data !== null && data.length === 0) {
-            successMessage = "No notes found for the matching criteria";
-          }
-          res.status(200).send({
-            success: true,
-            message: successMessage,
-            data: data,
-          });
-        }
-      });
+        });
     } catch (error) {
       logger.error("Error while finding the notes", error);
       res.status(500).json({
@@ -119,20 +125,28 @@ class NoteController {
    */
   findOne = (req, res) => {
     try {
-      service.findNoteById(req.params.noteId, (error, data) => {
-        if (error) {
+      service
+        .findNoteById(req.params.noteId)
+        .then((note) => {
+          if (!note) {
+            return res.status(404).send({
+              success: false,
+              message: "Note not found with id " + req.params.noteId,
+            });
+          }
+          res.send({
+            success: true,
+            message: "Note retrieved successfully!",
+            data: note,
+          });
+        })
+        .catch((error) => {
+          logger.error("Error while finding the note by id", error);
           res.status(500).send({
             success: false,
             message: "Some error occurred while retrieving note",
           });
-        } else {
-          res.status(200).send({
-            success: true,
-            message: "Note retrieved successfully!",
-            data: data,
-          });
-        }
-      });
+        });
     } catch (error) {
       logger.error("Error while finding the note by id", error);
       res.status(500).json({
@@ -164,32 +178,33 @@ class NoteController {
         isPinned: req.body.isPinned,
       };
       // Find note and update it with the request body
-      service.updateNoteById(req.params.noteId, note, (error, data) => {
-        if (error) {
-          if (error === messages.NOTE_NOT_FOUND) {
-            res.status(404).send({
+      service
+        .updateNoteById(req.params.noteId, note)
+        .then((note) => {
+          if (!note) {
+            return res.status(404).send({
               success: false,
-              message: `Note with id ${req.params.noteId} not found`,
-            });
-          } else {
-            res.status(500).send({
-              success: false,
-              message: "Some error occurred while updating note",
+              message: "Note not found with id " + req.params.noteId,
             });
           }
-        } else {
           res.status(200).send({
             success: true,
             message: "Note updated successfully!",
-            data: data,
+            data: note,
           });
-        }
-      });
-    } catch (error) {
-      logger.error("Error while updating the new note", error);
+        })
+        .catch((error) => {
+          logger.error("Error while updating the new note", error);
+          res.status(500).json({
+            success: false,
+            message: error,
+          });
+        });
+    } catch (err) {
+      logger.error("Error while updating the new note", err);
       res.status(500).json({
         success: false,
-        message: error,
+        message: err,
       });
     }
   };
@@ -251,29 +266,30 @@ class NoteController {
   deleteForever = (req, res) => {
     try {
       // Find note and update it with the request body
-      service.deleteNoteById(req.params.noteId, (error, data) => {
-        if (error) {
-          if (error === messages.NOTE_NOT_FOUND) {
-            logger.error(messages.NOTE_NOT_FOUND);
-            res.status(404).json({
+      service
+        .deleteNoteById(req.params.noteId)
+        .then((note) => {
+          if (!note) {
+            return res.status(404).send({
               success: false,
-              message: error,
-            });
-          } else {
-            res.status(500).send({
-              success: false,
-              message: "Some error occurred while deleting note",
+              message: "Note not found with id " + req.params.noteId,
             });
           }
-        } else {
-          res.status(200).send({
+          res.send({
             success: true,
             message: "Note deleted successfully!",
+            data: note,
           });
-        }
-      });
+        })
+        .catch((err) => {
+          logger.error("Error while deleting the note", err);
+          res.status(500).json({
+            success: false,
+            message: err,
+          });
+        });
     } catch (error) {
-      logger.error("Error while deleting the new note", error);
+      logger.error("Error while deleting the note", error);
       res.status(500).json({
         success: false,
         message: error,
