@@ -2,6 +2,10 @@ const mongoose = require("mongoose");
 const logger = require("../config/loggerConfig.js");
 const NoteSchema = mongoose.Schema(
   {
+    userId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "UserRegister",
+    },
     title: String,
     description: String,
     isPinned: {
@@ -33,6 +37,7 @@ class NoteModel {
       isPinned: note.isPinned || false,
       isArchived: false,
       isTrashed: false,
+      userId: note.userId,
     });
     newNote.save((err, doc) => {
       if (err) {
@@ -46,15 +51,18 @@ class NoteModel {
   };
 
   findAllNotes = (reqParam, callback) => {
-    Note.find({ isTrashed: reqParam.isTrashed, isArchived: reqParam.isArchived }, (err, doc) => {
-      if (err) {
-        logger.error("Error while finding the notes", err);
-        callback(err, null);
-      } else {
-        logger.info("Note found successfully", doc);
-        callback(null, doc);
+    Note.find(
+      { isTrashed: reqParam.isTrashed, isArchived: reqParam.isArchived, userId: reqParam.userId },
+      (err, doc) => {
+        if (err) {
+          logger.error("Error while finding the notes", err);
+          callback(err, null);
+        } else {
+          logger.info("Note found successfully", doc);
+          callback(null, doc);
+        }
       }
-    });
+    );
   };
 
   findNoteById = (noteId, callback) => {

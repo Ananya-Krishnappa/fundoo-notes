@@ -150,6 +150,13 @@ const notes = require("../controllers/note.js");
  *       example:
  *         isPinned: false
  */
+/* components:
+ *   securitySchemes:
+ *      bearerAuth:
+ *        type: http
+ *        scheme: bearer
+ *        bearerFormat: JWT
+ */
 
 module.exports = (app) => {
   /**
@@ -162,11 +169,15 @@ module.exports = (app) => {
    * @openapi
    * /:
    *   get:
+   *     security:
+   *       - bearerAuth: []
    *     tags: [Welcome]
    *     description: Welcome to Fundoo-Notes application!
    *     responses:
    *       200:
    *         description: Take notes quickly. Organize and keep track of all your notes.
+   *       401:
+   *         description: Access token is missing or invalid.
    */
   app.get("/", (req, res) => {
     res.json({
@@ -184,6 +195,8 @@ module.exports = (app) => {
    * @openapi
    * /register:
    *   post:
+   *     security:
+   *       - bearerAuth: []
    *     tags: [Authentication]
    *     summary: Register a new user
    *     requestBody:
@@ -201,6 +214,8 @@ module.exports = (app) => {
    *                          $ref: '#/components/schemas/Register'
    *          500:
    *              description: Some server error
+   *          401:
+   *              description: Access token is missing or invalid.
    */
   app.post("/register", userRegister.register);
 
@@ -209,6 +224,8 @@ module.exports = (app) => {
    *
    * /login:
    *   post:
+   *     security:
+   *       - bearerAuth: []
    *     summary: User login
    *     tags: [Authentication]
    *     requestBody:
@@ -228,6 +245,8 @@ module.exports = (app) => {
    *                          $ref: '#/components/schemas/Login'
    *          500:
    *              description: Some server error
+   *          401:
+   *              description: Access token is missing or invalid.
    */
   app.post("/login", userRegister.login);
 
@@ -236,6 +255,8 @@ module.exports = (app) => {
    *
    * /forgotPassword :
    *   post:
+   *     security:
+   *       - bearerAuth: []
    *     tags: [Authentication]
    *     summary: Forgot password link is sent to email
    *     requestBody:
@@ -253,6 +274,8 @@ module.exports = (app) => {
    *                          $ref: '#/components/schemas/ForgotPassword'
    *          500:
    *              description: Some server error
+   *          401:
+   *              description: Access token is missing or invalid.
    */
   app.post("/forgotPassword", userRegister.forgotPassword);
 
@@ -261,6 +284,8 @@ module.exports = (app) => {
    *
    * /resetPassword :
    *   post:
+   *     security:
+   *       - bearerAuth: []
    *     tags: [Authentication]
    *     summary: Reset password confirmation sent to email
    *     requestBody:
@@ -278,6 +303,8 @@ module.exports = (app) => {
    *                          $ref: '#/components/schemas/ResetPassword'
    *          500:
    *              description: Some server error
+   *          401:
+   *              description: Access token is missing or invalid.
    */
   app.post("/resetPassword", userRegister.resetPassword);
 
@@ -291,6 +318,8 @@ module.exports = (app) => {
    * @openapi
    * /notes:
    *   post:
+   *     security:
+   *       - bearerAuth: []
    *     tags: [Note]
    *     summary: Create a note
    *     requestBody:
@@ -308,13 +337,17 @@ module.exports = (app) => {
    *                          $ref: '#/components/schemas/Note'
    *          500:
    *              description: Some server error
+   *          401:
+   *              description: Access token is missing or invalid.
    */
   app.post("/notes", notes.create);
 
   /**
    * @openapi
-   * /notes:
-   *   get:
+   * /findNotes:
+   *   post:
+   *     security:
+   *       - bearerAuth: []
    *     tags: [Note]
    *     summary: Retrieve all notes
    *     parameters:
@@ -339,13 +372,17 @@ module.exports = (app) => {
    *                          $ref: '#/components/schemas/Note'
    *          500:
    *              description: Some server error
+   *          401:
+   *              description: Access token is missing or invalid.
    */
-  app.get("/notes", notes.findAll);
+  app.post("/findNotes", notes.findAll);
 
   /**
    * @openapi
    * /notes/{noteId}:
    *   get:
+   *     security:
+   *       - bearerAuth: []
    *     tags: [Note]
    *     summary: Retrieve a single note
    *     parameters:
@@ -364,6 +401,8 @@ module.exports = (app) => {
    *                          $ref: '#/components/schemas/Note'
    *          500:
    *              description: Some server error
+   *          401:
+   *              description: Access token is missing or invalid.
    */
   app.get("/notes/:noteId", notes.findOne);
 
@@ -372,6 +411,8 @@ module.exports = (app) => {
    *
    * /notes/{noteId} :
    *   put:
+   *     security:
+   *       - bearerAuth: []
    *     tags: [Note]
    *     summary: Update a note
    *     parameters:
@@ -396,6 +437,8 @@ module.exports = (app) => {
    *                          $ref: '#/components/schemas/Note'
    *          500:
    *              description: Some server error
+   *          401:
+   *              description: Access token is missing or invalid.
    */
   app.put("/notes/:noteId", notes.update);
 
@@ -404,6 +447,8 @@ module.exports = (app) => {
    *
    * /trashNote/{noteId}:
    *   put:
+   *     security:
+   *       - bearerAuth: []
    *     tags: [Note]
    *     summary: Trash/Restore a note
    *     parameters:
@@ -428,6 +473,8 @@ module.exports = (app) => {
    *                          $ref: '#/components/schemas/TrashNote'
    *          500:
    *              description: Some server error
+   *          401:
+   *              description: Access token is missing or invalid.
    */
   app.put("/trashNote/:noteId", notes.trash);
 
@@ -436,6 +483,8 @@ module.exports = (app) => {
    *
    * /notes/{noteId}:
    *   delete:
+   *     security:
+   *       - bearerAuth: []
    *     tags: [Note]
    *     summary: Delete a note permanently
    *     parameters:
@@ -454,6 +503,8 @@ module.exports = (app) => {
    *                          $ref: '#/components/schemas/Note'
    *          500:
    *              description: Some server error
+   *          401:
+   *              description: Access token is missing or invalid.
    */
   app.delete("/notes/:noteId", notes.deleteForever);
 
@@ -462,6 +513,8 @@ module.exports = (app) => {
    *
    * /archiveNote/{noteId}:
    *   put:
+   *     security:
+   *       - bearerAuth: []
    *     tags: [Note]
    *     summary: Archive/Unarchive a note
    *     parameters:
@@ -486,6 +539,8 @@ module.exports = (app) => {
    *                          $ref: '#/components/schemas/ArchiveNote'
    *          500:
    *              description: Some server error
+   *          401:
+   *              description: Access token is missing or invalid.
    */
   app.put("/archiveNote/:noteId", notes.archive);
 
@@ -494,6 +549,8 @@ module.exports = (app) => {
    *
    * /pinNote/{noteId}:
    *   put:
+   *     security:
+   *       - bearerAuth: []
    *     tags: [Note]
    *     summary: Pin/Unpin a note
    *     parameters:
@@ -518,6 +575,8 @@ module.exports = (app) => {
    *                          $ref: '#/components/schemas/PinNote'
    *          500:
    *              description: Some server error
+   *          401:
+   *              description: Access token is missing or invalid.
    */
   app.put("/pinNote/:noteId", notes.pin);
 };

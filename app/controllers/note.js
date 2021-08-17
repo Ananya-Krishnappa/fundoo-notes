@@ -26,9 +26,14 @@ class NoteController {
   create = (req, res) => {
     try {
       if (Object.keys(req.body).length === 0 && req.body.constructor === Object) {
-        logger.error("Invalid Params. Usage: { 'title': '<title>','description': '<description>'");
+        logger.error(
+          "Invalid Params. Usage: { 'title': '<title>','description': '<description>', 'userId': '<userId>'"
+        );
         return res.status(400).json({
-          message: "Invalid Params. Usage: { " + "'title': '<title>'," + "'description': '<description>',",
+          message:
+            "Invalid Params. Usage: { " +
+            "'title': '<title>'," +
+            "'description': '<description>', 'userId': '<userId>'",
         });
       }
       const { error, value } = validateCreateNote.validate(req.body);
@@ -43,6 +48,7 @@ class NoteController {
         title: req.body.title || "Untitled Note",
         description: req.body.description,
         isPinned: req.body.isPinned || false,
+        userId: req.body.userId,
       };
       service.createNote(note, (error, data) => {
         if (error) {
@@ -74,8 +80,9 @@ class NoteController {
    */
   findAll = (req, res) => {
     const reqParam = {
-      isTrashed: req.query.isTrashed || false,
-      isArchived: req.query.isArchived || false,
+      userId: req.body.userId,
+      isTrashed: req.body.isTrashed || false,
+      isArchived: req.body.isArchived || false,
     };
     try {
       service.findAllNotes(reqParam, (error, data) => {
@@ -151,6 +158,7 @@ class NoteController {
       }
       // Create a Note
       const note = {
+        userId: req.body.userId,
         title: req.body.title || "Untitled Note",
         description: req.body.description,
         isPinned: req.body.isPinned,

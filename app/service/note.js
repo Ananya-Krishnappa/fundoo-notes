@@ -14,7 +14,7 @@ const messages = require("../utils/messages.js");
 class NoteService {
   /**
    * @description create a note
-   * @param {*} userDetails
+   * @param {*} noteDetails
    * @param {*} callback
    */
   createNote = (note, callback) => {
@@ -31,7 +31,7 @@ class NoteService {
 
   /**
    * @description Retrieve all the notes
-   * @param {*} userDetails
+   * @param {*} noteDetails
    * @param {*} callback
    */
   findAllNotes = (reqParam, callback) => {
@@ -48,7 +48,7 @@ class NoteService {
 
   /**
    * @description Retrieve note by id
-   * @param {*} userDetails
+   * @param {*} noteDetails
    * @param {*} callback
    */
   findNoteById = (noteId, callback) => {
@@ -64,7 +64,7 @@ class NoteService {
   };
   /**
    * @description update note by id
-   * @param {*} userDetails
+   * @param {*} noteDetails
    * @param {*} callback
    */
   updateNoteById = (noteId, note, callback) => {
@@ -80,7 +80,7 @@ class NoteService {
   };
   /**
    * @description delete note by id
-   * @param {*} userDetails
+   * @param {*} noteDetails
    * @param {*} callback
    */
   deleteNoteById = (noteId, callback) => {

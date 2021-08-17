@@ -46,6 +46,7 @@ const validateCreateNote = Joi.object({
   title: Joi.string().max(50).required(),
   description: Joi.string().max(100).required(),
   isPinned: Joi.boolean().required(),
+  userId: Joi.string().required(),
 });
 
 const validateDeleteNote = Joi.object({
