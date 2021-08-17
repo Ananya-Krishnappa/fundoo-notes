@@ -73,8 +73,13 @@ class NoteService {
         logger.error("Error while updating note by id", err);
         callback(err, null);
       } else {
-        logger.info("Note updated successfully!", doc);
-        callback(null, doc);
+        if (doc === null) {
+          logger.info(messages.NOTE_NOT_FOUND, doc);
+          callback(messages.NOTE_NOT_FOUND, null);
+        } else {
+          logger.info("Note updated successfully!", doc);
+          callback(null, doc);
+        }
       }
     });
   };
