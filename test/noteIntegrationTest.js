@@ -20,7 +20,7 @@ chai.use(chaiHttp);
 
 describe("Notes API", () => {
   let token = "";
-  let noteId="";
+  let noteId = "";
 
   before((done) => {
     chai
@@ -53,7 +53,7 @@ describe("Notes API", () => {
           if (error) {
             return done(error);
           }
-          noteId=res.body.data._id;
+          noteId = res.body.data._id;
           res.should.have.status(201);
           res.body.should.be.a("object");
           res.body.should.have.property("success").eql(true);
