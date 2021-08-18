@@ -53,7 +53,7 @@ class NoteController {
       service
         .createNote(note)
         .then((note) => {
-          res.status(200).send({
+          res.status(201).send({
             success: true,
             message: "Note created successfully!",
             data: note,
