@@ -1,5 +1,6 @@
 const userRegister = require("../controllers/userAuth.js");
 const notes = require("../controllers/note.js");
+const labels = require("../controllers/label.js");
 /**
  * @openapi
  * components:
@@ -66,8 +67,8 @@ const notes = require("../controllers/note.js");
  *           type: string
  *           descripton: password of user
  *       example:
- *         email: Rita_Rutherford6@gmail.com
- *         password: BPG1_UAn8gt9LQx
+ *         email: warok12@gmail.com
+ *         password: 123456
  *     ForgotPassword:
  *       type: object
  *       required:
@@ -178,6 +179,34 @@ const notes = require("../controllers/note.js");
  *           description: note is pinned or not
  *       example:
  *         isPinned: false
+ *     Label:
+ *       type: object
+ *       required:
+ *         - labelName
+ *         - noteId
+ *       properties:
+ *         labelName:
+ *           type: string
+ *           description: label name of note
+ *         noteId:
+ *           type: string
+ *           description: note to which label belongs
+ *         isActive:
+ *           type: boolean
+ *           description: label is active or not
+ *       example:
+ *         labelName: hello label
+ *         noteId: 611bd48edd4342055c4fc72c
+ *     RemoveLabel:
+ *       type: object
+ *       required:
+ *         - isActive
+ *       properties:
+ *         isActive:
+ *           type: boolean
+ *           description: label is active or not
+ *       example:
+ *         isActive: false
  */
 
 module.exports = (app) => {
@@ -574,4 +603,94 @@ module.exports = (app) => {
    *              description: Access token is missing or invalid.
    */
   app.put("/pinNote/:noteId", notes.pin);
+
+  /**
+   * @openapi
+   * /label:
+   *   post:
+   *     security:
+   *       - bearerAuth: []
+   *     tags: [Label]
+   *     summary: Create a label
+   *     requestBody:
+   *       required: true
+   *       content:
+   *         application/json:
+   *           schema:
+   *             $ref: '#/components/schemas/Label'
+   *     responses:
+   *          201:
+   *              description: The label is created successfully
+   *              content:
+   *                  application/json:
+   *                      schema:
+   *                          $ref: '#/components/schemas/Label'
+   *          500:
+   *              description: Some server error
+   *          401:
+   *              description: Access token is missing or invalid.
+   */
+  app.post("/label", labels.create);
+  /**
+   * @openapi
+   * /label/{noteId}:
+   *   get:
+   *     security:
+   *       - bearerAuth: []
+   *     tags: [Label]
+   *     summary: Retrieve all labels
+   *     parameters:
+   *      - in: path
+   *        name: noteId
+   *        required: true
+   *        schema:
+   *          type: string
+   *        description: The note ID
+   *     responses:
+   *          200:
+   *              description: The labels are retrieved successfully
+   *              content:
+   *                  application/json:
+   *                      schema:
+   *                          $ref: '#/components/schemas/Label'
+   *          500:
+   *              description: Some server error
+   *          401:
+   *              description: Access token is missing or invalid.
+   */
+  app.get("/label/:noteId", labels.findAll);
+  /**
+   * @openapi
+   * /label/{labelId}:
+   *   put:
+   *     security:
+   *       - bearerAuth: []
+   *     tags: [Label]
+   *     summary: Update a label
+   *     parameters:
+   *      - in: path
+   *        name: labelId
+   *        required: true
+   *        schema:
+   *          type: string
+   *        description: The label ID
+   *     requestBody:
+   *       required: true
+   *       content:
+   *         application/json:
+   *           schema:
+   *             $ref: '#/components/schemas/RemoveLabel'
+   *     responses:
+   *          200:
+   *              description: Update the label
+   *              content:
+   *                  application/json:
+   *                      schema:
+   *                          $ref: '#/components/schemas/RemoveLabel'
+   *          500:
+   *              description: Some server error
+   *          401:
+   *              description: Access token is missing or invalid.
+   */
+  app.put("/label/:labelId", labels.removeLabel);
 };

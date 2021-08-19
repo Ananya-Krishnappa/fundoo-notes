@@ -223,32 +223,39 @@ class NoteController {
           message: error.details[0].message,
         });
       }
-      // Create a Note
       const note = {
         isTrashed: req.body.isTrashed,
       };
       // Find note and update it with the request body
-      service.updateNoteById(req.params.noteId, note, (error, data) => {
-        if (error) {
-          if (error === messages.NOTE_NOT_FOUND) {
-            res.status(404).send({
+      service
+        .updateNoteById(req.params.noteId, note)
+        .then((note) => {
+          if (!note) {
+            return res.status(404).send({
               success: false,
-              message: `Note with id ${req.params.noteId} not found`,
-            });
-          } else {
-            res.status(500).send({
-              success: false,
-              message: "Some error occurred while trashing note",
+              message: "Note not found with id " + req.params.noteId,
             });
           }
-        } else {
           res.status(200).send({
             success: true,
-            message: "Note trashed successfully!",
-            data: data,
+            message: "Note trashed/restored successfully!",
+            data: note,
           });
-        }
-      });
+        })
+        .catch((error) => {
+          logger.error("Error while finding the note by id", error);
+          res.status(500).send({
+            success: false,
+            message: "Some error occurred while trashing/restoring note",
+          });
+        })
+        .catch((err) => {
+          logger.error("Error while trashing the new note", error);
+          res.status(500).json({
+            success: false,
+            message: error,
+          });
+        });
     } catch (error) {
       logger.error("Error while trashing the new note", error);
       res.status(500).json({
@@ -311,32 +318,39 @@ class NoteController {
           message: error.details[0].message,
         });
       }
-      // Create a Note
       const note = {
         isArchived: req.body.isArchived,
       };
       // Find note and update it with the request body
-      service.updateNoteById(req.params.noteId, note, (error, data) => {
-        if (error) {
-          if (error === messages.NOTE_NOT_FOUND) {
-            res.status(404).send({
+      service
+        .updateNoteById(req.params.noteId, note)
+        .then((note) => {
+          if (!note) {
+            return res.status(404).send({
               success: false,
-              message: `Note with id ${req.params.noteId} not found`,
-            });
-          } else {
-            res.status(500).send({
-              success: false,
-              message: "Some error occurred while archiving note",
+              message: "Note not found with id " + req.params.noteId,
             });
           }
-        } else {
-          res.status(200).send({
+          res.send({
             success: true,
             message: "Note archived successfully!",
-            data: data,
+            data: note,
           });
-        }
-      });
+        })
+        .catch((err) => {
+          logger.error("Error while archiving the note", err);
+          res.status(500).json({
+            success: false,
+            message: err,
+          });
+        })
+        .catch((err) => {
+          logger.error("Error while archiving the new note", err);
+          res.status(500).json({
+            success: false,
+            message: err,
+          });
+        });
     } catch (error) {
       logger.error("Error while archiving the new note", error);
       res.status(500).json({
@@ -365,27 +379,35 @@ class NoteController {
         isPinned: req.body.isPinned,
       };
       // Find note and update it with the request body
-      service.updateNoteById(req.params.noteId, note, (error, data) => {
-        if (error) {
-          if (error === messages.NOTE_NOT_FOUND) {
-            res.status(404).send({
+      service
+        .updateNoteById(req.params.noteId, note)
+        .then((note) => {
+          if (!note) {
+            return res.status(404).send({
               success: false,
-              message: `Note with id ${req.params.noteId} not found`,
-            });
-          } else {
-            res.status(500).send({
-              success: false,
-              message: "Some error occurred while pinning note",
+              message: "Note not found with id " + req.params.noteId,
             });
           }
-        } else {
-          res.status(200).send({
+          res.send({
             success: true,
             message: "Note pinned successfully!",
-            data: data,
+            data: note,
           });
-        }
-      });
+        })
+        .catch((err) => {
+          logger.error("Error while pinning the note", err);
+          res.status(500).json({
+            success: false,
+            message: err,
+          });
+        })
+        .catch((err) => {
+          logger.error("Error while pinning the new note", err);
+          res.status(500).json({
+            success: false,
+            message: err,
+          });
+        });
     } catch (error) {
       logger.error("Error while pinning the new note", error);
       res.status(500).json({

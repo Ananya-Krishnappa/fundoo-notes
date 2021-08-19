@@ -49,8 +49,17 @@ const validateCreateNote = Joi.object({
   userId: Joi.string().required(),
 });
 
+const validateCreateLabel = Joi.object({
+  labelName: Joi.string().max(100).required(),
+  noteId: Joi.string().required(),
+});
+
 const validateDeleteNote = Joi.object({
   isTrashed: Joi.boolean().required(),
+});
+
+const validateDeleteLabel = Joi.object({
+  isActive: Joi.boolean().required(),
 });
 const validateArchiveNote = Joi.object({
   isArchived: Joi.boolean().required(),
@@ -67,4 +76,6 @@ module.exports = {
   validateDeleteNote,
   validateArchiveNote,
   validatePinNote,
+  validateCreateLabel,
+  validateDeleteLabel,
 };
