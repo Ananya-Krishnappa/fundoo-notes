@@ -203,7 +203,7 @@ describe("Notes API", () => {
     it("givenValidInputs_whenPostRequestToGetAllNotes_thenReturnSuccessMessage", (done) => {
       chai
         .request(server)
-        .post("/findNotes")
+        .post("/findNotes/all")
         .send(notesData)
         .set("Authorization", "Bearer " + token)
         .end((error, res) => {

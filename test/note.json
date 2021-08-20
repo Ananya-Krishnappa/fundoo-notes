@@ -56,39 +56,14 @@
   },
 
   "getAllNotes": {
-    "isTrashed": false,
-    "isArchived": false,
     "userId": "61044f6e033c88027c68538d"
   },
 
   "getAllNotesWithNoUserid": {
-    "isTrashed": false,
-    "isArchived": false,
     "userId": ""
   },
 
   "getNotesById": "60d1ec33dcb70161ff688e09",
 
-  "getNotesByInvalidId": "60ccd2061412cbce156d1b",
-
-  "updateNote": {
-    "title": "Test Notes",
-    "description": "testing notes app",
-    "userId": "61044f6e033c88027c68538d",
-    "isPinned": false
-  },
-
-  "updateNoteWithNoTitle": {
-    "title": "",
-    "description": "this is my second notes",
-    "userId": "61044f6e033c88027c68538d",
-    "isPinned": false
-  },
-
-  "updateNoteWithNoDescription": {
-    "title": "Test Notes",
-    "description": "",
-    "userId": "61044f6e033c88027c68538d",
-    "isPinned": false
-  }
+  "getNotesByInvalidId": "60ccd2061412cbce156d1b"
 }

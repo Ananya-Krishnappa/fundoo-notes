@@ -80,17 +80,22 @@ class NoteController {
    * @param {*} request from client
    * @param {*} response to client
    */
-  findAll = (req, res) => {
+  findNotes = (req, res) => {
     try {
       const reqParam = {
         userId: req.body.userId,
-        isTrashed: req.body.isTrashed || false,
-        isArchived: req.body.isArchived || false,
+        isTrashed: false,
+        isArchived: false,
       };
+      if (req.params.noteStatus === "trash") {
+        reqParam.isTrashed = true;
+      } else if (req.params.noteStatus === "archive") {
+        reqParam.isArchived = true;
+      }
       service
         .findAllNotes(reqParam)
         .then((notes) => {
-          if (!notes) {
+          if (notes != null && notes.length === 0) {
             return res.status(404).send({
               success: false,
               message: "Notes not found",

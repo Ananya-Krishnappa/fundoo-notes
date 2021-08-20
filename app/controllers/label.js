@@ -32,7 +32,6 @@ class LabelController {
           message: error.details[0].message,
         });
       }
-      // Create a Label
       const label = {
         labelName: req.body.labelName || "Untitled Label",
         noteId: req.body.noteId,
@@ -72,7 +71,7 @@ class LabelController {
       service
         .findAllLabel(req.params.noteId)
         .then((labels) => {
-          if (!labels) {
+          if (labels != null && labels.length === 0) {
             return res.status(404).send({
               success: false,
               message: "No labels present for this note",

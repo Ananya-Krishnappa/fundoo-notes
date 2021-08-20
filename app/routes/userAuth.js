@@ -133,8 +133,6 @@ const labels = require("../controllers/label.js");
  *       type: object
  *       required:
  *         - userId
- *         - isTrashed
- *         - isArchived
  *       properties:
  *         userId:
  *           type: string
@@ -146,8 +144,6 @@ const labels = require("../controllers/label.js");
  *           type: boolean
  *           description: note is trashed or not
  *       example:
- *         isArchived: false
- *         isTrashed: false
  *         userId: 61044f6e033c88027c68538d
  *     TrashNote:
  *       type: object
@@ -375,12 +371,19 @@ module.exports = (app) => {
 
   /**
    * @openapi
-   * /findNotes:
+   * /findNotes/{noteStatus}:
    *   post:
    *     security:
    *       - bearerAuth: []
    *     tags: [Note]
    *     summary: Retrieve all notes
+   *     parameters:
+   *      - in: path
+   *        name: noteStatus
+   *        required: true
+   *        schema:
+   *          type: string
+   *        description: The note status
    *     requestBody:
    *       required: true
    *       content:
@@ -399,7 +402,7 @@ module.exports = (app) => {
    *          401:
    *              description: Access token is missing or invalid.
    */
-  app.post("/findNotes", notes.findAll);
+  app.post("/findNotes/:noteStatus", notes.findNotes);
 
   /**
    * @openapi
