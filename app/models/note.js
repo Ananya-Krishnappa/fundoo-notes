@@ -63,6 +63,18 @@ class NoteModel {
       });
   };
 
+  findAllNotesUsingRedisCache = (userId) => {
+    return Note.find({ userId: userId })
+      .then((notes) => {
+        logger.info("Notes found successfully", notes);
+        return notes;
+      })
+      .catch((error) => {
+        logger.error("Error while finding the notes", error);
+        throw error;
+      });
+  };
+
   findNoteById = (noteId) => {
     return Note.findById(noteId)
       .then((note) => {

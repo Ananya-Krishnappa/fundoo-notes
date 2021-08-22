@@ -4,8 +4,6 @@ const chaiHttp = require("chai-http");
 const server = require("../server");
 const labelInputs = require("./label.json");
 const userInput = require("./userAuth.json");
-const labelController = require("../app/controllers/label.js");
-const sinon = require("sinon");
 const expect = chai.expect;
 chai.use(chaiHttp);
 
@@ -18,9 +16,6 @@ describe("Notes API", () => {
       .post("/login")
       .send(userInput.userLogin)
       .end((error, res) => {
-        if (error) {
-          expect(error).to.not.null;
-        }
         token = res.body.token;
         expect(error).to.be.null;
         res.should.have.status(200);
@@ -41,9 +36,6 @@ describe("Notes API", () => {
         .send(labelData)
         .set("Authorization", "Bearer " + token)
         .end((error, res) => {
-          if (error) {
-            expect(error).to.not.null;
-          }
           expect(error).to.be.null;
           res.should.have.status(201);
           res.body.should.be.a("object");
@@ -61,9 +53,6 @@ describe("Notes API", () => {
         .send(labelData)
         .set("Authorization", "Bearer " + token)
         .end((error, res) => {
-          if (error) {
-            expect(error).to.not.null;
-          }
           const errorMsg = "Invalid Params. Usage: { " + "'labelName': '<labelName>'," + "'noteId': '<noteId>'";
           res.should.have.status(400);
           res.body.should.be.a("object");
@@ -79,9 +68,6 @@ describe("Notes API", () => {
         .send(labelData)
         .set("Authorization", "Bearer " + token)
         .end((error, res) => {
-          if (error) {
-            expect(error).to.not.null;
-          }
           expect(error).to.be.null;
           res.should.have.status(400);
           res.body.should.be.a("object");
@@ -97,9 +83,6 @@ describe("Notes API", () => {
         .send(labelData)
         .set("Authorization", "Bearer " + token)
         .end((error, res) => {
-          if (error) {
-            expect(error).to.not.null;
-          }
           expect(error).to.be.null;
           res.should.have.status(400);
           res.body.should.be.a("object");
@@ -117,9 +100,6 @@ describe("Notes API", () => {
         .send(labelData)
         .set("Authorization", "Bearer " + token)
         .end((error, res) => {
-          if (error) {
-            expect(error).to.not.null;
-          }
           expect(error).to.be.null;
           res.should.have.status(200);
           res.body.should.be.a("object");
@@ -137,9 +117,6 @@ describe("Notes API", () => {
         .send(labelData)
         .set("Authorization", "Bearer " + token)
         .end((error, res) => {
-          if (error) {
-            expect(error).to.not.null;
-          }
           expect(error).to.be.null;
           res.should.have.status(400);
           res.body.should.be.a("object");
@@ -157,9 +134,6 @@ describe("Notes API", () => {
         .get("/label/611bd480dd4342055c4fc72a")
         .set("Authorization", "Bearer " + token)
         .end((error, res) => {
-          if (error) {
-            expect(error).to.not.null;
-          }
           expect(error).to.be.null;
           res.should.have.status(200);
           res.body.should.be.a("object");
@@ -175,9 +149,6 @@ describe("Notes API", () => {
         .get("/label/611fcfb31f387a435ceeb302")
         .set("Authorization", "Bearer " + token)
         .end((error, res) => {
-          if (error) {
-            expect(error).to.not.null;
-          }
           expect(error).to.be.null;
           res.should.have.status(404);
           res.body.should.be.a("object");

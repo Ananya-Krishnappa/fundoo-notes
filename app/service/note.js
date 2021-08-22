@@ -61,6 +61,30 @@ class NoteService {
       }
     });
   };
+  /**
+   * @description Retrieve and return all notes from the cache.
+   * @param {*} request from client
+   * @param {*} response to client
+   */
+  findAllNotesUsingRedisCache = (userId) => {
+    return new Promise(function (resolve, reject) {
+      try {
+        noteModel
+          .findAllNotesUsingRedisCache(userId)
+          .then((notes) => {
+            logger.info("Notes found successfully!", notes);
+            resolve(notes);
+          })
+          .catch((error) => {
+            logger.error("Error while finding the notes", error);
+            reject(error);
+          });
+      } catch (err) {
+        logger.error("Error while finding the notes", error);
+        reject(error);
+      }
+    });
+  };
 
   /**
    * @description Retrieve note by id
