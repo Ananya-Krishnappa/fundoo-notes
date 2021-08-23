@@ -9,7 +9,6 @@
  */
 const noteModel = require("../models/note.js");
 const logger = require("../config/loggerConfig.js");
-const messages = require("../utils/messages.js");
 
 class NoteService {
   /**
@@ -38,39 +37,15 @@ class NoteService {
   };
 
   /**
-   * @description Retrieve all the notes
-   * @param {*} noteDetails
-   * @param {*} callback
-   */
-  findAllNotes = (reqParam) => {
-    return new Promise(function (resolve, reject) {
-      try {
-        noteModel
-          .findAllNotes(reqParam)
-          .then((notes) => {
-            logger.info("Notes found successfully!", notes);
-            resolve(notes);
-          })
-          .catch((error) => {
-            logger.error("Error while finding the notes", error);
-            reject(error);
-          });
-      } catch (err) {
-        logger.error("Error while finding the notes", error);
-        reject(error);
-      }
-    });
-  };
-  /**
    * @description Retrieve and return all notes from the cache.
    * @param {*} request from client
    * @param {*} response to client
    */
-  findAllNotesUsingRedisCache = (userId) => {
+  findAllNotes = (userId) => {
     return new Promise(function (resolve, reject) {
       try {
         noteModel
-          .findAllNotesUsingRedisCache(userId)
+          .findAllNotes(userId)
           .then((notes) => {
             logger.info("Notes found successfully!", notes);
             resolve(notes);

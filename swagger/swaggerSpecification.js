@@ -22,7 +22,7 @@ const options = {
       },
     ],
   },
-  apis: ["./app/routes/userAuth.js"],
+  apis: ["./app/routes/route.js"],
 };
 
 const swaggerSpecs = swaggerJsdoc(options);

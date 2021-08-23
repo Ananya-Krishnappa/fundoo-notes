@@ -11,9 +11,9 @@ const chai = require("chai");
 const sinon = require("sinon");
 const faker = require("faker");
 const expect = chai.expect;
-const userAuthController = require("../app/controllers/userAuth");
-const userAuthService = require("../app/service/userAuth");
-const testData = require("./utils/testData");
+const userAuthController = require("../../app/controllers/userAuth");
+const userAuthService = require("../../app/service/userAuth");
+const testData = require("../utils/testData");
 describe("User Authentication", function () {
   describe("User Registration", function () {
     let status, json, res;

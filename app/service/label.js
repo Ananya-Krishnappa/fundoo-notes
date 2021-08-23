@@ -9,7 +9,6 @@
  */
 const labelModel = require("../models/label.js");
 const logger = require("../config/loggerConfig.js");
-const messages = require("../utils/messages.js");
 
 class LabelService {
   /**

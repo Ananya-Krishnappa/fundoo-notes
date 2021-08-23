@@ -2,12 +2,12 @@ const chai = require("chai");
 const sinon = require("sinon");
 const faker = require("faker");
 const expect = chai.expect;
-const userAuthService = require("../app/service/userAuth");
-const userAuthRepo = require("../app/models/userAuth");
-const tokenService = require("../app/service/token.js");
-const utilService = require("../app/utils/authentication.js");
-const messages = require("../app/utils/messages.js");
-const testData = require("./utils/testData");
+const userAuthService = require("../../app/service/userAuth");
+const userAuthRepo = require("../../app/models/userAuth");
+const tokenService = require("../../app/service/token.js");
+const utilService = require("../../app/utils/authentication.js");
+const messages = require("../../app/utils/messages.js");
+const testData = require("../utils/testData");
 describe("User Authentication Service", function () {
   beforeEach(() => {
     sinon.restore();
@@ -20,13 +20,14 @@ describe("User Authentication Service", function () {
       const registerStub = sinon.stub(userAuthRepo, "register");
       registerStub.yields(null, testData.userData);
       userAuthService.register(userDetails, (err, doc) => {
+        expect(err).to.be.null;
         registerStub.restore();
         expect(registerStub.calledOnce).to.be.true;
-        expect(doc.id).to.equal(testData.userData.id);
+        expect(doc.id).to.equal(id);
         expect(doc.firstName).to.equal(testData.userData.firstName);
         expect(doc.email).to.equal(testData.userData.email);
-        expect(doc.createdAt).to.equal(testData.userData.createdAt);
-        expect(doc.updatedAt).to.equal(testData.userData.updatedAt);
+        expect(doc.createdAt).to.equal(createdAt);
+        expect(doc.updatedAt).to.equal(updatedAt);
       });
     });
   });
@@ -63,6 +64,7 @@ describe("User Authentication Service", function () {
       const findEmailStub = sinon.stub(userAuthRepo, "findUserByEmail");
       findEmailStub.yields(error, null);
       userAuthService.login(userDetails, (err, doc) => {
+        expect(doc).to.be.null;
         findEmailStub.restore();
         expect(findEmailStub.calledOnce).to.be.true;
         expect(err).to.equal(error);
@@ -105,6 +107,7 @@ describe("User Authentication Service", function () {
       const findUserStub = sinon.stub(userAuthRepo, "findUserByEmail");
       findUserStub.yields(error, null);
       userAuthService.forgotPassword(userDetails, (err, doc) => {
+        expect(doc).to.be.null;
         findUserStub.restore();
         expect(findUserStub.calledOnce).to.be.true;
         expect(err).to.equal(error);
@@ -118,6 +121,7 @@ describe("User Authentication Service", function () {
       const findUserStub = sinon.stub(userAuthRepo, "findUserByEmail");
       findUserStub.yields(null, null);
       userAuthService.forgotPassword(userDetails, (err, doc) => {
+        expect(doc).to.be.null;
         findUserStub.restore();
         expect(findUserStub.calledOnce).to.be.true;
         expect(err).to.equal(messages.USER_NOT_FOUND);
@@ -168,6 +172,7 @@ describe("User Authentication Service", function () {
       updatePasswordStub.yields(error, null);
       userAuthService.resetPassword(userDetails, (err, doc) => {
         updatePasswordStub.restore();
+        expect(doc).to.be.null;
         expect(updatePasswordStub.calledOnce).to.be.true;
         expect(err).to.equal(error);
       });
@@ -191,6 +196,7 @@ describe("User Authentication Service", function () {
       const findUserStub = sinon.stub(userAuthRepo, "findUserById");
       findUserStub.yields(error, null);
       userAuthService.resetPassword(userDetails, (err, doc) => {
+        expect(doc).to.be.null;
         updatePasswordStub.restore();
         expect(updatePasswordStub.calledOnce).to.be.true;
         findUserStub.restore();
@@ -216,6 +222,7 @@ describe("User Authentication Service", function () {
       const findUserStub = sinon.stub(userAuthRepo, "findUserById");
       findUserStub.yields(null, null);
       userAuthService.resetPassword(userDetails, (err, doc) => {
+        expect(doc).to.be.null;
         updatePasswordStub.restore();
         expect(updatePasswordStub.calledOnce).to.be.true;
         findUserStub.restore();

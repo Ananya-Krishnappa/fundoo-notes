@@ -41,11 +41,11 @@ class UserRegisterController {
             "}",
         });
       }
-      const { error, value } = validationUserRegistration.validate(req.body);
-      if (error) {
+      const validation = validationUserRegistration.validate(req.body);
+      if (validation.error) {
         return res.status(400).json({
           success: false,
-          message: error.details[0].message,
+          message: validation.error.details[0].message,
         });
       }
       // User details
@@ -88,12 +88,11 @@ class UserRegisterController {
    */
   login = (req, res) => {
     try {
-      const { error, value } = validateUserLogin.validate(req.body);
-      if (error) {
-        logger.error("error.details[0].message", error);
+      const validation = validateUserLogin.validate(req.body);
+      if (validation.error) {
         return res.status(400).json({
           success: false,
-          message: error.details[0].message,
+          message: validation.error.details[0].message,
         });
       }
       // User details
@@ -135,12 +134,12 @@ class UserRegisterController {
 
   forgotPassword = (req, res) => {
     try {
-      const { error, value } = validateForgotPassword.validate(req.body);
-      if (error) {
-        logger.error("User email validation failed", error);
+      const validation = validateForgotPassword.validate(req.body);
+      if (validation.error) {
+        logger.error("User email validation failed", validation.error);
         return res.status(400).json({
           success: false,
-          message: error.details[0].message,
+          message: validation.error.details[0].message,
         });
       }
       const userDetails = {
@@ -187,12 +186,12 @@ class UserRegisterController {
    */
   resetPassword = (req, res) => {
     try {
-      const { error, value } = validateResetPassword.validate(req.body);
-      if (error) {
-        logger.error("Password validation failed", error);
+      const validation = validateResetPassword.validate(req.body);
+      if (validation.error) {
+        logger.error("Password validation failed", validation.error);
         return res.status(400).json({
           success: false,
-          message: error.details[0].message,
+          message: validation.error.details[0].message,
         });
       }
       const userDetails = {

@@ -45,15 +45,15 @@ class UserRegisterService {
         callback(err, null);
       } else {
         if (doc === null) {
-          logger.info("User does not exist", doc);
-          callback("User does not exist", null);
+          logger.info(messages.USER_NOT_FOUND, doc);
+          callback(messages.USER_NOT_FOUND, null);
         } else {
           if (authHelper.comparePassword(userCredentials.password, doc.password)) {
             logger.info("Token is generated");
             callback(null, authHelper.generateToken(doc));
           } else {
-            logger.info("Please enter a valid password");
-            callback("Please enter a valid password", null);
+            logger.info(messages.ENTER_VALID_PASSWORD);
+            callback(messages.ENTER_VALID_PASSWORD, null);
           }
         }
       }
@@ -126,7 +126,7 @@ class UserRegisterService {
    * @returns
    */
   sendPasswordResetConfirmation = (userDoc) => {
-    console.log("process.env.NODE_ENV", process.env.NODE_ENV);
+    logger.info("process.env.NODE_ENV", process.env.NODE_ENV);
     if (process.env.NODE_ENV !== "test") {
       sendEmail(
         userDoc.email,

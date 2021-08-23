@@ -26,11 +26,11 @@ class LabelController {
           message: "Invalid Params. Usage: { " + "'labelName': '<labelName>'," + "'noteId': '<noteId>'",
         });
       }
-      const { error, value } = validateCreateLabel.validate(req.body);
-      if (error) {
+      const validation = validateCreateLabel.validate(req.body);
+      if (validation.error) {
         return res.status(400).json({
           success: false,
-          message: error.details[0].message,
+          message: validation.error.details[0].message,
         });
       }
       const label = {
@@ -63,49 +63,11 @@ class LabelController {
   };
 
   /**
-   * @description Retrieve and return all labels from the database.
+   * @description Retrieve and return all labels from the cache/database.
    * @param {*} request from client
    * @param {*} response to client
    */
   findAll = (req, res) => {
-    try {
-      service
-        .findAllLabel(req.params.noteId)
-        .then((labels) => {
-          if (labels != null && labels.length === 0) {
-            return res.status(404).send({
-              success: false,
-              message: "No labels present for this note",
-            });
-          }
-          res.send({
-            success: true,
-            message: "Labels retrieved successfully!",
-            data: labels,
-          });
-        })
-        .catch((err) => {
-          logger.error("Error while finding labels", err);
-          res.status(500).send({
-            success: false,
-            message: "Some error occurred while retrieving labels",
-          });
-        });
-    } catch (error) {
-      logger.error("Error while finding the labels", error);
-      res.status(500).json({
-        success: false,
-        message: error,
-      });
-    }
-  };
-
-  /**
-   * @description Retrieve and return all labels from the cache.
-   * @param {*} request from client
-   * @param {*} response to client
-   */
-  findAllLabelUsingRedisCache = (req, res) => {
     try {
       const noteId = req.params.noteId;
       client.get(noteId, (err, labels) => {
@@ -165,11 +127,11 @@ class LabelController {
    */
   removeLabel = (req, res) => {
     try {
-      const { error, value } = validateDeleteLabel.validate(req.body);
-      if (error) {
+      const validation = validateDeleteLabel.validate(req.body);
+      if (validation.error) {
         return res.status(400).json({
           success: false,
-          message: error.details[0].message,
+          message: validation.error.details[0].message,
         });
       }
       const label = {

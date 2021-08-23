@@ -7,14 +7,12 @@
  * @version: 1.0.0
  * @since: 09-08-2021
  */
-const mocha = require("mocha");
 const chai = require("chai");
 const chaiHttp = require("chai-http");
-//require("superagent");
-const server = require("../server.js");
-const userModel = require("../app/models/userAuth.js");
-const userInputs = require("./userAuth.json");
-
+const server = require("../../server.js");
+const userModel = require("../../app/models/userAuth.js");
+const userInputs = require("../userAuth.json");
+const expect = chai.expect;
 //assertion style
 chai.should();
 chai.use(chaiHttp);
@@ -32,9 +30,7 @@ describe("POST-SUCCESS /register", () => {
       .post("/register")
       .send(userData)
       .end((error, res) => {
-        if (error) {
-          done(error);
-        }
+        expect(error).to.be.null;
         res.should.have.status(201);
         res.body.should.be.a("object");
         res.body.should.have.property("success").eql(true);
@@ -56,9 +52,7 @@ describe("POST-FAILURE /register", () => {
       .post("/register")
       .send(userData)
       .end((error, res) => {
-        if (error) {
-          done(error);
-        }
+        expect(error).to.be.null;
         res.should.have.status(400);
         res.body.should.be.a("object");
         res.body.should.have.property("message").eql('"firstName" is not allowed to be empty');
@@ -73,9 +67,7 @@ describe("POST-FAILURE /register", () => {
       .post("/register")
       .send(userData)
       .end((error, res) => {
-        if (error) {
-          done(error);
-        }
+        expect(error).to.be.null;
         res.should.have.status(400);
         res.body.should.be.a("object");
         res.body.should.have.property("message").eql('"lastName" is not allowed to be empty');
@@ -90,9 +82,7 @@ describe("POST-FAILURE /register", () => {
       .post("/register")
       .send(userData)
       .end((error, res) => {
-        if (error) {
-          done(error);
-        }
+        expect(error).to.be.null;
         res.should.have.status(400);
         res.body.should.be.a("object");
         res.body.should.have.property("message").eql('"email" must be a valid email');
@@ -107,9 +97,7 @@ describe("POST-FAILURE /register", () => {
       .post("/register")
       .send(userData)
       .end((error, res) => {
-        if (error) {
-          done(error);
-        }
+        expect(error).to.be.null;
         res.should.have.status(400);
         res.body.should.be.a("object");
         res.body.should.have.property("message").eql('"password" is not allowed to be empty');
@@ -130,9 +118,7 @@ describe("POST /login", () => {
       .post("/login")
       .send(userData)
       .end((error, res) => {
-        if (error) {
-          done(error);
-        }
+        expect(error).to.be.null;
         res.should.have.status(200);
         res.body.should.be.a("object");
         res.body.should.have.property("success").eql(true);
@@ -149,9 +135,7 @@ describe("POST /login", () => {
       .post("/login")
       .send(userData)
       .end((error, res) => {
-        if (error) {
-          done(error);
-        }
+        expect(error).to.be.null;
         res.should.have.status(400);
         res.body.should.be.a("object");
         res.body.should.have.property("message").eql('"email" must be a valid email');
@@ -166,29 +150,10 @@ describe("POST /login", () => {
       .post("/login")
       .send(userData)
       .end((error, res) => {
-        if (error) {
-          done(error);
-        }
+        expect(error).to.be.null;
         res.should.have.status(400);
         res.body.should.be.a("object");
         res.body.should.have.property("message").eql('"password" is not allowed to be empty');
-        done();
-      });
-  });
-
-  it("givenInvalidPassword_whenInvokedLoginFunc_thenReturnsErrorMessage", (done) => {
-    let userData = userInputs.incorrectPassword;
-    chai
-      .request(server)
-      .post("/login")
-      .send(userData)
-      .end((error, res) => {
-        if (error) {
-          done(error);
-        }
-        res.should.have.status(500);
-        res.body.should.be.a("object");
-        res.body.should.have.property("message").eql("Please enter a valid password");
         done();
       });
   });
@@ -207,9 +172,7 @@ describe("POST /forgotPassword", () => {
       .post("/forgotPassword")
       .send(userData)
       .end((error, res) => {
-        if (error) {
-          done(error);
-        }
+        expect(error).to.be.null;
         res.should.have.status(200);
         res.body.should.be.a("object");
         res.body.should.have.property("success").eql(true);
@@ -225,9 +188,7 @@ describe("POST /forgotPassword", () => {
       .post("/forgotPassword")
       .send(userData)
       .end((error, res) => {
-        if (error) {
-          throw error;
-        }
+        expect(error).to.be.null;
         res.should.have.status(404);
         res.body.should.be.a("object");
         res.body.should.have.property("message").eql("User does not exist");
@@ -242,9 +203,7 @@ describe("POST /forgotPassword", () => {
       .post("/forgotPassword")
       .send(userData)
       .end((error, res) => {
-        if (error) {
-          done(error);
-        }
+        expect(error).to.be.null;
         res.should.have.status(400);
         res.body.should.be.a("object");
         res.body.should.have.property("message").eql('"email" must be a valid email');

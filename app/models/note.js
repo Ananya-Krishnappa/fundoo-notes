@@ -51,19 +51,7 @@ class NoteModel {
       });
   };
 
-  findAllNotes = (reqParam) => {
-    return Note.find({ isTrashed: reqParam.isTrashed, isArchived: reqParam.isArchived, userId: reqParam.userId })
-      .then((notes) => {
-        logger.info("Notes found successfully", notes);
-        return notes;
-      })
-      .catch((error) => {
-        logger.error("Error while finding the notes", error);
-        throw error;
-      });
-  };
-
-  findAllNotesUsingRedisCache = (userId) => {
+  findAllNotes = (userId) => {
     return Note.find({ userId: userId })
       .then((notes) => {
         logger.info("Notes found successfully", notes);

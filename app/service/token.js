@@ -42,7 +42,7 @@ class TokenService {
         logger.error("Error while deleting the token by user id", tokenDeleteErr);
         callback(tokenDeleteErr, null);
       } else {
-        logger.info("Token deleted");
+        logger.info("Token deleted", tokenDeleteSuccess);
       }
     });
   };
@@ -57,9 +57,10 @@ class TokenService {
     const hash = bcrypt.hash(resetToken, Number(process.env.SALT_ROUNDS));
     tokenModel.saveToken(doc._id, String(hash), (saveTokenErr, saveTokenSuccess) => {
       if (saveTokenErr) {
-        logger.error("Error while saving the token", err);
+        logger.error("Error while saving the token", saveTokenErr);
         callback(saveTokenErr, null);
       } else {
+        logger.info("Saving the token success", saveTokenSuccess);
         const link = `${process.env.CLIENT_URL}/passwordReset`;
         const forgotPasswordResponse = {
           link: link,
@@ -128,7 +129,7 @@ class TokenService {
         logger.error("Error while deleting the token by user id", tokenDeleteErr);
         callback(tokenDeleteErr, null);
       } else {
-        logger.info("Token deleted");
+        logger.info("Token deleted", tokenDeleteSuccess);
         callback(null, "Password reset successful!");
       }
     });

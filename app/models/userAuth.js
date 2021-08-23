@@ -127,7 +127,7 @@ class UserRegisterModel {
         if (err) {
           logger.error("Error while deleting user by email", err);
         } else {
-          logger.info("deleted user by email successfully", err);
+          logger.info("deleted user by email successfully", doc);
         }
       }
     );

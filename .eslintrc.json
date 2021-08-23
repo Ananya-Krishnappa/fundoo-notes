@@ -6,6 +6,10 @@
     "es6": true
   },
   "rules": {
-    "prettier/prettier": "error"
+    "prettier/prettier": "error",
+    "no-console": "error",
+    "no-alert": "error",
+    "no-debugger": "error",
+    "no-unused-vars": "error"
   }
 }

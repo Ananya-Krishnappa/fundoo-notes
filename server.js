@@ -30,11 +30,11 @@ app.use(bodyParser.json());
 dbConnectionHelper.connectToDb();
 app.use(auth);
 // Require Notes routes
-require("./app/routes/userAuth.js")(app);
+require("./app/routes/route.js")(app);
 
 // listen for requests
 app.listen(process.env.PORT, () => {
-  console.log(`Server is listening on port ${process.env.PORT}`);
+  logger.info(`Server is listening on port ${process.env.PORT}`);
 });
 
 module.exports = app;

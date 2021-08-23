@@ -386,40 +386,6 @@ module.exports = (app) => {
    *             $ref: '#/components/schemas/FindNotes'
    *     responses:
    *          200:
-   *              description: The notes are retrieved successfully
-   *              content:
-   *                  application/json:
-   *                      schema:
-   *                          $ref: '#/components/schemas/FindNotes'
-   *          500:
-   *              description: Some server error
-   *          401:
-   *              description: Access token is missing or invalid.
-   */
-  app.post("/findNotes/:noteStatus", notes.findNotes);
-  /**
-   * @openapi
-   * /findNotesUsingRedisCache/{noteStatus}:
-   *   post:
-   *     security:
-   *       - bearerAuth: []
-   *     tags: [Note]
-   *     summary: Retrieve all notes
-   *     parameters:
-   *      - in: path
-   *        name: noteStatus
-   *        required: true
-   *        schema:
-   *          type: string
-   *        description: The note status
-   *     requestBody:
-   *       required: true
-   *       content:
-   *         application/json:
-   *           schema:
-   *             $ref: '#/components/schemas/FindNotes'
-   *     responses:
-   *          200:
    *              description: The notes are retrieved successfully from cache
    *              content:
    *                  application/json:
@@ -430,7 +396,7 @@ module.exports = (app) => {
    *          401:
    *              description: Access token is missing or invalid.
    */
-  app.post("/findNotesUsingRedisCache/:noteStatus", notes.findNotesUsingRedisCache);
+  app.post("/findNotes/:noteStatus", notes.findNotes);
 
   /**
    * @openapi
@@ -679,34 +645,6 @@ module.exports = (app) => {
    *        description: The note ID
    *     responses:
    *          200:
-   *              description: The labels are retrieved successfully
-   *              content:
-   *                  application/json:
-   *                      schema:
-   *                          $ref: '#/components/schemas/Label'
-   *          500:
-   *              description: Some server error
-   *          401:
-   *              description: Access token is missing or invalid.
-   */
-  app.get("/label/:noteId", labels.findAll);
-  /**
-   * @openapi
-   * /findAllLabelUsingRedisCache/{noteId}:
-   *   get:
-   *     security:
-   *       - bearerAuth: []
-   *     tags: [Label]
-   *     summary: Retrieve all labels
-   *     parameters:
-   *      - in: path
-   *        name: noteId
-   *        required: true
-   *        schema:
-   *          type: string
-   *        description: The note ID
-   *     responses:
-   *          200:
    *              description: The labels are retrieved successfully from cache
    *              content:
    *                  application/json:
@@ -717,7 +655,7 @@ module.exports = (app) => {
    *          401:
    *              description: Access token is missing or invalid.
    */
-  app.get("/findAllLabelUsingRedisCache/:noteId", labels.findAllLabelUsingRedisCache);
+  app.get("/label/:noteId", labels.findAll);
   /**
    * @openapi
    * /label/{labelId}:

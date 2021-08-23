@@ -78,7 +78,7 @@ class TokenModel {
         logger.error("Error while deleting token by user id", err);
         callback(err, null);
       } else {
-        logger.info("Token is deleted");
+        logger.info("Token is deleted", doc);
         callback(null, "Token is deleted");
       }
     });

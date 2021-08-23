@@ -7,12 +7,13 @@
  * @version: 1.0.0
  * @since: 18-08-2021
  */
-const mocha = require("mocha");
 const chai = require("chai");
 const chaiHttp = require("chai-http");
-const server = require("../server.js");
-const noteInput = require("./note.json");
-const userInput = require("./userAuth.json");
+const logger = require("../../app/config/loggerConfig.js");
+const server = require("../../server.js");
+const noteInput = require("../note.json");
+const userInput = require("../userAuth.json");
+const expect = chai.expect;
 
 //assertion style
 chai.should();
@@ -28,11 +29,9 @@ describe("Notes API", () => {
       .post("/login")
       .send(userInput.userLogin)
       .end((error, res) => {
-        if (error) {
-          return done(error);
-        }
+        expect(error).to.be.null;
         token = res.body.token;
-        console.log("token", token);
+        logger.info("token", token);
         res.should.have.status(200);
         return done();
       });
@@ -50,9 +49,7 @@ describe("Notes API", () => {
         .send(notesData)
         .set("Authorization", "Bearer " + token)
         .end((error, res) => {
-          if (error) {
-            return done(error);
-          }
+          expect(error).to.be.null;
           noteId = res.body.data._id;
           res.should.have.status(201);
           res.body.should.be.a("object");
@@ -71,9 +68,7 @@ describe("Notes API", () => {
         .send(notesData)
         .set("Authorization", "Bearer " + token)
         .end((error, res) => {
-          if (error) {
-            return done(error);
-          }
+          expect(error).to.be.null;
           res.should.have.status(400);
           res.body.should.be.a("object");
           res.body.should.have.property("message").eql('"title" is not allowed to be empty');
@@ -89,9 +84,7 @@ describe("Notes API", () => {
         .send(notesData)
         .set("Authorization", "Bearer " + token)
         .end((error, res) => {
-          if (error) {
-            return done(error);
-          }
+          expect(error).to.be.null;
           res.should.have.status(400);
           res.body.should.be.a("object");
           res.body.should.have.property("message").eql('"description" is not allowed to be empty');
@@ -107,9 +100,7 @@ describe("Notes API", () => {
         .send(notesData)
         .set("Authorization", "Bearer " + token)
         .end((error, res) => {
-          if (error) {
-            return done(error);
-          }
+          expect(error).to.be.null;
           res.should.have.status(400);
           res.body.should.be.a("object");
           res.body.should.have.property("message").eql('"userId" is not allowed to be empty');
@@ -127,9 +118,7 @@ describe("Notes API", () => {
         .send(notesData)
         .set("Authorization", "Bearer " + token)
         .end((error, res) => {
-          if (error) {
-            return done(error);
-          }
+          expect(error).to.be.null;
           res.should.have.status(200);
           res.body.should.be.a("object");
           res.body.should.have.property("success").eql(true);
@@ -147,9 +136,7 @@ describe("Notes API", () => {
         .send(notesData)
         .set("Authorization", "Bearer " + token)
         .end((error, res) => {
-          if (error) {
-            return done(error);
-          }
+          expect(error).to.be.null;
           res.should.have.status(400);
           res.body.should.be.a("object");
           res.body.should.have.property("message").eql('"title" is not allowed to be empty');
@@ -165,9 +152,7 @@ describe("Notes API", () => {
         .send(notesData)
         .set("Authorization", "Bearer " + token)
         .end((error, res) => {
-          if (error) {
-            return done(error);
-          }
+          expect(error).to.be.null;
           res.should.have.status(400);
           res.body.should.be.a("object");
           res.body.should.have.property("message").eql('"description" is not allowed to be empty');
@@ -183,9 +168,7 @@ describe("Notes API", () => {
         .send(notesData)
         .set("Authorization", "Bearer " + token)
         .end((error, res) => {
-          if (error) {
-            return done(error);
-          }
+          expect(error).to.be.null;
           res.should.have.status(400);
           res.body.should.be.a("object");
           res.body.should.have.property("message").eql('"userId" is not allowed to be empty');
@@ -198,7 +181,7 @@ describe("Notes API", () => {
    * /GET request test
    * Positive and Negative - Get all Notes from database
    */
-  describe("POST all /notes", (done) => {
+  describe("POST all /notes", () => {
     let notesData = noteInput.getAllNotes;
     it("givenValidInputs_whenPostRequestToGetAllNotes_thenReturnSuccessMessage", (done) => {
       chai
@@ -207,15 +190,13 @@ describe("Notes API", () => {
         .send(notesData)
         .set("Authorization", "Bearer " + token)
         .end((error, res) => {
-          if (error) {
-            return done(error);
-          }
+          expect(error).to.be.null;
           res.should.have.status(200);
           res.body.should.be.a("object");
           res.body.should.have.property("success").eql(true);
-          res.body.should.have.property("message").eql("Notes retrieved successfully!");
+          expect(res.body.message).contain("Notes retrieved successfully");
           res.body.should.have.property("data").should.be.a("object");
-          return done();
+          done();
         });
     });
   });
@@ -231,9 +212,7 @@ describe("Notes API", () => {
         .delete(`/notes/${noteId}`)
         .set("Authorization", "Bearer " + token)
         .end((error, res) => {
-          if (error) {
-            return done(error);
-          }
+          expect(error).to.be.null;
           res.should.have.status(200);
           res.body.should.be.a("object");
           res.body.should.have.property("success").eql(true);

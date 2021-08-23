@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-
+const logger = require("./loggerConfig");
 class DbConnectionHelper {
   connectToDb = () => {
     mongoose.Promise = global.Promise;
@@ -13,10 +13,10 @@ class DbConnectionHelper {
         autoIndex: true,
       })
       .then(() => {
-        console.log("Successfully connected to the database");
+        logger.info("Successfully connected to the database");
       })
       .catch((err) => {
-        console.log("Could not connect to the database. Exiting now...", err);
+        logger.info("Could not connect to the database. Exiting now...", err);
         process.exit();
       });
   };

@@ -1,9 +1,8 @@
-const mocha = require("mocha");
 const chai = require("chai");
 const chaiHttp = require("chai-http");
-const server = require("../server");
-const labelInputs = require("./label.json");
-const userInput = require("./userAuth.json");
+const server = require("../../server");
+const labelInputs = require("../label.json");
+const userInput = require("../userAuth.json");
 const expect = chai.expect;
 chai.use(chaiHttp);
 
@@ -138,7 +137,7 @@ describe("Notes API", () => {
           res.should.have.status(200);
           res.body.should.be.a("object");
           res.body.should.have.property("success").eql(true);
-          res.body.should.have.property("message").eql("Labels retrieved successfully!");
+          expect(res.body.message).contain("Labels retrieved successfully");
           res.body.should.have.property("message").should.be.a("object");
           done();
         });

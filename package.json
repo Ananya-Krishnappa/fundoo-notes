@@ -7,7 +7,7 @@
     "start": "nodemon server.js",
     "debug": "nodemon --inspect server.js",
     "lint": "eslint --ignore-path .gitignore .",
-    "test": "cross-env NODE_ENV=test mocha --exit",
+    "test": "cross-env NODE_ENV=test mocha 'test/**/*.js' --exit",
     "coverage": "nyc mocha",
     "prepare": "husky install"
   },
