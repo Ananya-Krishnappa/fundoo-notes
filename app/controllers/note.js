@@ -48,7 +48,7 @@ class NoteController {
       const note = {
         title: req.body.title || "Untitled Note",
         description: req.body.description,
-        isPinned: req.body.isPinned || false,
+        isPinned: req.body.isPinned === true ? true : false,
         userId: req.body.userId,
       };
       service

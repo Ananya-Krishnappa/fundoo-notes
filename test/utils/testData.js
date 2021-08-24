@@ -10,5 +10,11 @@ class TestData {
     createdAt: faker.date.past(),
     updatedAt: faker.date.past(),
   };
+  noteData = {
+    title: faker.lorem.word(),
+    description: faker.lorem.word(),
+    userId: faker.datatype.uuid(),
+    isPinned: faker.datatype.boolean(),
+  };
 }
 module.exports = new TestData();

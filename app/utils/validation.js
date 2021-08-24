@@ -45,7 +45,7 @@ const validateResetPassword = Joi.object({
 const validateCreateNote = Joi.object({
   title: Joi.string().max(50).required(),
   description: Joi.string().max(100).required(),
-  isPinned: Joi.boolean().required(),
+  isPinned: Joi.boolean(),
   userId: Joi.string().required(),
 });
 
