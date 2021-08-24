@@ -63,54 +63,36 @@ class LabelController {
   };
 
   /**
-   * @description Retrieve and return all labels from the cache/database.
+   * @description Retrieve and return all labels from the database.
    * @param {*} request from client
    * @param {*} response to client
    */
-  findAll = (req, res) => {
+  findLabel = (req, res) => {
     try {
       const noteId = req.params.noteId;
-      client.get(noteId, (err, labels) => {
-        if (err) throw err;
-        if (labels) {
-          let resultLabels = JSON.parse(labels);
-          if (resultLabels != null && resultLabels.length === 0) {
+      service
+        .findAllLabel(noteId)
+        .then((labels) => {
+          if (labels != null && labels.length === 0) {
             return res.status(404).send({
               success: false,
               message: "No labels present for this note",
             });
           }
+          client.setex(noteId, 60, JSON.stringify(labels));
           res.send({
             success: true,
-            message: "Labels retrieved successfully from cache",
-            data: resultLabels,
+            message: "Labels retrieved successfully from database",
+            data: labels,
           });
-        } else {
-          service
-            .findAllLabel(noteId)
-            .then((labels) => {
-              if (labels != null && labels.length === 0) {
-                return res.status(404).send({
-                  success: false,
-                  message: "No labels present for this note",
-                });
-              }
-              client.setex(noteId, 60, JSON.stringify(labels));
-              res.send({
-                success: true,
-                message: "Labels retrieved successfully from database",
-                data: labels,
-              });
-            })
-            .catch((err) => {
-              logger.error("Error while finding labels", err);
-              res.status(500).send({
-                success: false,
-                message: "Some error occurred while retrieving labels",
-              });
-            });
-        }
-      });
+        })
+        .catch((err) => {
+          logger.error("Error while finding labels", err);
+          res.status(500).send({
+            success: false,
+            message: "Some error occurred while retrieving labels",
+          });
+        });
     } catch (error) {
       logger.error("Error while finding the labels", error);
       res.status(500).json({

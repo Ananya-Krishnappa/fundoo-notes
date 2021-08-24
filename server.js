@@ -5,7 +5,7 @@ const swaggerUi = require("swagger-ui-express");
 const { swaggerSpecs } = require("./swagger/swaggerSpecification.js");
 const dbConnectionHelper = require("./app/config/dbConnection.js");
 const logger = require("./app/config/loggerConfig");
-const auth = require("./authMiddleware");
+const auth = require("./app/middleware/authMiddleware");
 // create express app
 const app = express();
 

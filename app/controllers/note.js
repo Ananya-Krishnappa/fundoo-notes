@@ -11,7 +11,6 @@ const service = require("../service/note.js");
 const logger = require("../config/loggerConfig.js");
 const redis = require("redis");
 const client = redis.createClient(process.env.REDIS_PORT);
-
 const {
   validateCreateNote,
   validateDeleteNote,
@@ -78,23 +77,24 @@ class NoteController {
   };
 
   /**
-   * @description Retrieve and return all notes from the cache/database.
+   * @description Retrieve and return all notes from the database.
    * @param {*} request from client
    * @param {*} response to client
    */
   findNotes = (req, res) => {
     try {
       const userId = req.body.userId;
-      client.get(userId, (err, notes) => {
-        if (err) throw err;
-        if (notes) {
-          let filteredNotes = JSON.parse(notes);
-          if (filteredNotes != null && filteredNotes.length === 0) {
+      service
+        .findAllNotes(userId)
+        .then((notes) => {
+          if (notes != null && notes.length === 0) {
             return res.status(404).json({
               success: false,
               message: "Notes not found",
             });
           }
+          client.setex(userId, 60, JSON.stringify(notes));
+          let filteredNotes = notes;
           if (req.params.noteStatus === "trash") {
             filteredNotes = filteredNotes.filter((note) => note.isTrashed === true);
           } else if (req.params.noteStatus === "archive") {
@@ -102,41 +102,17 @@ class NoteController {
           }
           res.status(200).json({
             success: true,
-            message: "Notes retrieved successfully from the cache!",
+            message: "Notes retrieved successfully from database!",
             data: filteredNotes,
           });
-        } else {
-          service
-            .findAllNotes(userId)
-            .then((notes) => {
-              if (notes != null && notes.length === 0) {
-                return res.status(404).json({
-                  success: false,
-                  message: "Notes not found",
-                });
-              }
-              client.setex(userId, 60, JSON.stringify(notes));
-              let filteredNotes = notes;
-              if (req.params.noteStatus === "trash") {
-                filteredNotes = filteredNotes.filter((note) => note.isTrashed === true);
-              } else if (req.params.noteStatus === "archive") {
-                filteredNotes = filteredNotes.filter((note) => note.isArchived === true);
-              }
-              res.status(200).json({
-                success: true,
-                message: "Notes retrieved successfully from database!",
-                data: filteredNotes,
-              });
-            })
-            .catch((err) => {
-              logger.error("Error while finding notes", err);
-              res.status(500).json({
-                success: false,
-                message: "Some error occurred while retrieving notes",
-              });
-            });
-        }
-      });
+        })
+        .catch((err) => {
+          logger.error("Error while finding notes", err);
+          res.status(500).json({
+            success: false,
+            message: "Some error occurred while retrieving notes",
+          });
+        });
     } catch (error) {
       logger.error("Error while finding the notes", error);
       res.status(500).json({

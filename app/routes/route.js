@@ -1,6 +1,7 @@
 const userRegister = require("../controllers/userAuth.js");
 const notes = require("../controllers/note.js");
 const labels = require("../controllers/label.js");
+const redis = require("../middleware/redis.js");
 /**
  * @openapi
  * components:
@@ -396,7 +397,7 @@ module.exports = (app) => {
    *          401:
    *              description: Access token is missing or invalid.
    */
-  app.post("/findNotes/:noteStatus", notes.findNotes);
+  app.post("/findNotes/:noteStatus", redis.findNotes, notes.findNotes);
 
   /**
    * @openapi
@@ -655,7 +656,7 @@ module.exports = (app) => {
    *          401:
    *              description: Access token is missing or invalid.
    */
-  app.get("/label/:noteId", labels.findAll);
+  app.get("/label/:noteId", redis.findLabel, labels.findLabel);
   /**
    * @openapi
    * /label/{labelId}:
