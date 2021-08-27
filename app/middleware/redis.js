@@ -78,6 +78,9 @@ class RedisCache {
       });
     }
   };
+  clearCache = (key) => {
+    client.del(key);
+  };
 }
 
 module.exports = new RedisCache();

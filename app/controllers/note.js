@@ -11,6 +11,7 @@ const service = require("../service/note.js");
 const logger = require("../config/loggerConfig.js");
 const redis = require("redis");
 const client = redis.createClient(process.env.REDIS_PORT);
+const redisCache = require("../middleware/redis.js");
 const {
   validateCreateNote,
   validateDeleteNote,
@@ -54,6 +55,7 @@ class NoteController {
       service
         .createNote(note)
         .then((note) => {
+          redisCache.clearCache(req.body.userId);
           res.status(201).json({
             success: true,
             message: "Note created successfully!",
@@ -191,6 +193,7 @@ class NoteController {
               message: "Note not found with id " + req.params.noteId,
             });
           }
+          redisCache.clearCache(req.body.userId);
           res.status(200).json({
             success: true,
             message: "Note updated successfully!",

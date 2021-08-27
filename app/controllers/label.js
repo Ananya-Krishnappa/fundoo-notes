@@ -12,6 +12,7 @@ const logger = require("../config/loggerConfig.js");
 const { validateCreateLabel, validateDeleteLabel } = require("../utils/validation.js");
 const redis = require("redis");
 const client = redis.createClient(process.env.REDIS_PORT);
+const redisCache = require("../middleware/redis.js");
 class LabelController {
   /**
    * @description create and save label
@@ -40,6 +41,7 @@ class LabelController {
       service
         .createLabel(label)
         .then((label) => {
+          redisCache.clearCache(req.body.noteId);
           res.status(201).send({
             success: true,
             message: "Label created successfully!",
