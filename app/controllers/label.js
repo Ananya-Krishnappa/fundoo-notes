@@ -10,8 +10,6 @@
 const service = require("../service/label.js");
 const logger = require("../config/loggerConfig.js");
 const { validateCreateLabel, validateDeleteLabel } = require("../utils/validation.js");
-const redis = require("redis");
-const client = redis.createClient(process.env.REDIS_PORT);
 const redisCache = require("../middleware/redis.js");
 class LabelController {
   /**

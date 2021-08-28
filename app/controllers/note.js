@@ -9,8 +9,6 @@
  */
 const service = require("../service/note.js");
 const logger = require("../config/loggerConfig.js");
-const redis = require("redis");
-const client = redis.createClient(process.env.REDIS_PORT);
 const redisCache = require("../middleware/redis.js");
 const {
   validateCreateNote,
