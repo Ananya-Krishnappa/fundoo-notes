@@ -95,7 +95,7 @@ class NoteController {
               message: "Notes not found",
             });
           }
-          client.setex(userId, 60, JSON.stringify(notes));
+          redisCache.updateCache(userId, 60, notes);
           let filteredNotes = notes;
           if (req.params.noteStatus === "trash") {
             filteredNotes = filteredNotes.filter((note) => note.isTrashed === true);

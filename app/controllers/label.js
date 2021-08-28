@@ -81,7 +81,7 @@ class LabelController {
               message: "No labels present for this note",
             });
           }
-          client.setex(noteId, 60, JSON.stringify(labels));
+          redisCache.updateCache(noteId, 60, labels);
           res.send({
             success: true,
             message: "Labels retrieved successfully from database",

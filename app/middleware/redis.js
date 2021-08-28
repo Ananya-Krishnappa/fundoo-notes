@@ -81,6 +81,9 @@ class RedisCache {
   clearCache = (key) => {
     client.del(key);
   };
+  updateCache = (key, expiryTime, value) => {
+    client.setex(key, expiryTime, JSON.stringify(value));
+  };
 }
 
 module.exports = new RedisCache();
