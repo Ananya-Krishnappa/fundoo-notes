@@ -114,7 +114,7 @@ describe("Notes API", () => {
       let notesData = noteInput.updateNote;
       chai
         .request(server)
-        .put("/notes/611bd480dd4342055c4fc72a")
+        .put("/notes/612cfdc565b76d271ced6fa9")
         .send(notesData)
         .set("Authorization", "Bearer " + token)
         .end((error, res) => {

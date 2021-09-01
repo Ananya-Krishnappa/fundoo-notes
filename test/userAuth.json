@@ -2,7 +2,6 @@
   "createUser": {
     "firstName": "Willa",
     "lastName": "Bartell",
-    "phoneNumber": "(705) 111-6141",
     "password": "BPG1_UAn8gt9LQx",
     "email": "Rita_Rutherford6@gmail.com"
   },
@@ -11,32 +10,28 @@
     "firstName": "",
     "lastName": "Gowda",
     "email": "ananyagowda@gmail.com",
-    "password": "ananya123!",
-    "phoneNumber": "8765212345"
+    "password": "ananya123!"
   },
 
   "invalidLastname": {
     "firstName": "Ananya",
     "lastName": "",
     "email": "ananyagowda@gmail.com",
-    "password": "ananya123!",
-    "phoneNumber": "8735712345"
+    "password": "ananya123!"
   },
 
   "invalidEmail": {
     "firstName": "Ananya",
     "lastName": "Gowda",
     "email": "ananyagowda@gmailcom",
-    "password": "veena@123",
-    "phoneNumber": "8764712345"
+    "password": "veena@123"
   },
 
   "invalidPassword": {
     "firstName": "Ananya",
     "lastName": "Gowda",
     "email": "ananyagowda@gmail.com",
-    "password": "",
-    "phoneNumber": "8769712345"
+    "password": ""
   },
 
   "userLogin": {
@@ -60,7 +55,7 @@
   },
 
   "forgotPassword": {
-    "email": "Sita_Rutherford6@gmail.com"
+    "email": "ananyak3395@gmail.com"
   },
 
   "invalidEmailForForgotPassword": {

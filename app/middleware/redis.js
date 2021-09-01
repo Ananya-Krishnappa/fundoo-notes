@@ -78,9 +78,19 @@ class RedisCache {
       });
     }
   };
+  /**
+   * @description Clear cache after every update,create and delete operations.
+   * @param {*} key
+   */
   clearCache = (key) => {
     client.del(key);
   };
+  /**
+   * @description Set value from the cache.
+   * @param {*} key
+   * @param {*} expiryTime
+   * @param {*} value
+   */
   updateCache = (key, expiryTime, value) => {
     client.setex(key, expiryTime, JSON.stringify(value));
   };

@@ -28,7 +28,7 @@ class UserRegisterController {
     try {
       if (Object.keys(req.body).length === 0 && req.body.constructor === Object) {
         logger.error(
-          "Invalid Params. Usage: { 'firstName': '<first_name>','lastName': '<last_name>','email': '<email>','phoneNumber': '<phone_number>','password': '<password>'}"
+          "Invalid Params. Usage: { 'firstName': '<first_name>','lastName': '<last_name>','email': '<email>','password': '<password>'}"
         );
         return res.status(400).json({
           message:
@@ -36,7 +36,6 @@ class UserRegisterController {
             "'firstName': '<first_name>'," +
             "'lastName': '<last_name>'," +
             "'email': '<email>'," +
-            "'phoneNumber': '<phone_number>'," +
             "'password': '<password>'" +
             "}",
         });
@@ -53,7 +52,6 @@ class UserRegisterController {
         firstName: req.body.firstName,
         lastName: req.body.lastName,
         email: req.body.email,
-        phoneNumber: req.body.phoneNumber,
         password: authHelper.encryptPassword(req.body.password),
       };
       service.register(userDetails, (error, data) => {

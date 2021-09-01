@@ -95,7 +95,7 @@ describe("Notes API", () => {
       let labelData = labelInputs.removeLabel;
       chai
         .request(server)
-        .put("/label/611e74427ad38d3a6846f8ac")
+        .put("/label/612fc816f058ef33d4cacdcb")
         .send(labelData)
         .set("Authorization", "Bearer " + token)
         .end((error, res) => {

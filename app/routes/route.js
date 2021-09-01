@@ -17,7 +17,6 @@ const redis = require("../middleware/redis.js");
  *         - firstName
  *         - lastName
  *         - email
- *         - phoneNumber
  *         - password
  *       properties:
  *         id:
@@ -32,9 +31,6 @@ const redis = require("../middleware/redis.js");
  *         email:
  *           type: string
  *           descripton: email of user
- *         phoneNumber:
- *           type: string
- *           descripton: phoneNumber of user
  *         password:
  *           type: string
  *           descripton: password of user
@@ -50,7 +46,6 @@ const redis = require("../middleware/redis.js");
  *         firstName: Willa
  *         lastName: Bartell
  *         email: Rita_Rutherford6@gmail.com
- *         phoneNumber: (705) 995-6141
  *         password: BPG1_UAn8gt9LQx
  *     Login:
  *       type: object

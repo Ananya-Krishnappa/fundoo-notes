@@ -4,7 +4,6 @@ class TestData {
     id: faker.datatype.uuid(),
     firstName: faker.name.firstName(),
     lastName: faker.name.lastName(),
-    phoneNumber: faker.phone.phoneNumber(),
     password: faker.internet.password(),
     email: faker.internet.email(),
     createdAt: faker.date.past(),

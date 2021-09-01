@@ -6,6 +6,7 @@ const { swaggerSpecs } = require("./swagger/swaggerSpecification.js");
 const dbConnectionHelper = require("./app/config/dbConnection.js");
 const logger = require("./app/config/loggerConfig");
 const auth = require("./app/middleware/authMiddleware");
+const cors = require("cors");
 // create express app
 const app = express();
 
@@ -16,6 +17,7 @@ app.use(
     explorer: true,
   })
 );
+app.use(cors());
 
 // parse requests of content-type - application/x-www-form-urlencoded
 app.use(

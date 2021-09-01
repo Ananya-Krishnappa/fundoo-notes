@@ -37,7 +37,7 @@ describe("User Authentication", function () {
       expect(status.args[0][0]).to.equal(400);
       expect(json.calledOnce).to.be.true;
       expect(json.args[0][0].message).to.equal(
-        "Invalid Params. Usage: { 'firstName': '<first_name>','lastName': '<last_name>','email': '<email>','phoneNumber': '<phone_number>','password': '<password>'}"
+        "Invalid Params. Usage: { 'firstName': '<first_name>','lastName': '<last_name>','email': '<email>','password': '<password>'}"
       );
     });
 
@@ -46,7 +46,6 @@ describe("User Authentication", function () {
         body: {
           lastName: faker.name.lastName(),
           email: faker.internet.email(),
-          phoneNumber: faker.phone.phoneNumber(),
           password: faker.internet.password(),
         },
       };
@@ -62,7 +61,6 @@ describe("User Authentication", function () {
         body: {
           firstName: faker.name.firstName(),
           lastName: faker.name.lastName(),
-          phoneNumber: faker.phone.phoneNumber(),
           password: faker.internet.password(),
         },
       };
@@ -78,7 +76,6 @@ describe("User Authentication", function () {
         body: {
           firstName: faker.name.firstName(),
           lastName: faker.name.lastName(),
-          phoneNumber: faker.phone.phoneNumber(),
           password: faker.internet.password(),
           email: faker.internet.email(),
         },

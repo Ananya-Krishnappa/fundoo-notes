@@ -25,11 +25,6 @@ const UserRegisterSchema = mongoose.Schema(
       required: true,
       unique: true,
     },
-    phoneNumber: {
-      type: String,
-      required: true,
-      unique: true,
-    },
     password: {
       type: String,
       required: true,
@@ -53,7 +48,6 @@ class UserRegisterModel {
       firstName: userDetails.firstName,
       lastName: userDetails.lastName,
       email: userDetails.email,
-      phoneNumber: userDetails.phoneNumber,
       password: userDetails.password,
     });
     newUser.save((err, doc) => {
