@@ -193,8 +193,8 @@ class UserRegisterController {
         });
       }
       const userDetails = {
-        userId: req.body.userId,
-        token: req.body.token,
+        userId: req.query.id,
+        token: req.query.token,
         newPassword: req.body.password,
       };
       service.resetPassword(userDetails, (error, data) => {

@@ -61,7 +61,7 @@ class TokenService {
         callback(saveTokenErr, null);
       } else {
         logger.info("Saving the token success", saveTokenSuccess);
-        const link = `${process.env.CLIENT_URL}/passwordReset`;
+        const link = `${process.env.CLIENT_URL}resetPassword?token=${resetToken}&id=${doc._id}`;
         const forgotPasswordResponse = {
           link: link,
           resetToken: resetToken,
