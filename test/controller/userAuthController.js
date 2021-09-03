@@ -135,16 +135,18 @@ describe("User Authentication", function () {
           email: faker.internet.email(),
         },
       };
-      let token =
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoid2Fyb2sxMkBnbWFpbC5jb20iLCJleHBpcmVzSW4iOiIxaCIsImlhdCI6MTYyNzkzMDg0OX0.3FK4Cc3ncleCcqAaR-sthQzJtAZ1XeFcrfkaPXldQVk";
+      let userData = {
+        token:
+          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoid2Fyb2sxMkBnbWFpbC5jb20iLCJleHBpcmVzSW4iOiIxaCIsImlhdCI6MTYyNzkzMDg0OX0.3FK4Cc3ncleCcqAaR-sthQzJtAZ1XeFcrfkaPXldQVk",
+      };
       let loginStub = sinon.stub(userAuthService, "login");
-      loginStub.yields(null, token);
+      loginStub.yields(null, userData);
       userAuthController.login(req, res);
       expect(loginStub.calledOnce).to.be.true;
       expect(status.calledOnce).to.be.true;
       expect(status.args[0][0]).to.equal(200);
       expect(json.calledOnce).to.be.true;
-      expect(json.args[0][0].token).to.equal(token);
+      expect(json.args[0][0].data.token).to.equal(userData.token);
     });
   });
 });

@@ -50,7 +50,11 @@ class UserRegisterService {
         } else {
           if (authHelper.comparePassword(userCredentials.password, doc.password)) {
             logger.info("Token is generated");
-            callback(null, authHelper.generateToken(doc));
+            const userData = {
+              id: doc._id,
+              token: authHelper.generateToken(doc),
+            };
+            callback(null, userData);
           } else {
             logger.info(messages.ENTER_VALID_PASSWORD);
             callback(messages.ENTER_VALID_PASSWORD, null);

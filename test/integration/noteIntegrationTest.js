@@ -30,7 +30,7 @@ describe("Notes API", () => {
       .send(userInput.userLogin)
       .end((error, res) => {
         expect(error).to.be.null;
-        token = res.body.token;
+        token = res.body.data.token;
         logger.info("token", token);
         res.should.have.status(200);
         return done();

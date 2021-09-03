@@ -38,6 +38,10 @@ describe("User Authentication Service", function () {
         email: faker.internet.email(),
       };
       const token = faker.random.alphaNumeric();
+      const userData = {
+        id: faker.datatype.uuid(),
+        token: token,
+      };
       const findEmailStub = sinon.stub(userAuthRepo, "findUserByEmail");
       findEmailStub.yields(null, testData.userData);
       const comparePasswordStub = sinon.stub(utilService, "comparePassword");
@@ -51,7 +55,7 @@ describe("User Authentication Service", function () {
         expect(comparePasswordStub.calledOnce).to.be.true;
         generateTokenStub.restore();
         expect(generateTokenStub.calledOnce).to.be.true;
-        expect(doc).to.equal(token);
+        expect(doc.token).to.equal(userData.token);
       });
     });
 

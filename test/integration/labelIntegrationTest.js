@@ -15,7 +15,7 @@ describe("Notes API", () => {
       .post("/login")
       .send(userInput.userLogin)
       .end((error, res) => {
-        token = res.body.token;
+        token = res.body.data.token;
         expect(error).to.be.null;
         res.should.have.status(200);
         return done();

@@ -123,7 +123,7 @@ describe("POST /login", () => {
         res.body.should.be.a("object");
         res.body.should.have.property("success").eql(true);
         res.body.should.have.property("message").eql("User logged in!");
-        res.body.should.have.property("token");
+        res.body.should.have.property("data");
         done();
       });
   });
