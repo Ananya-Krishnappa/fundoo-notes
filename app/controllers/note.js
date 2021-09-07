@@ -99,6 +99,8 @@ class NoteController {
             filteredNotes = filteredNotes.filter((note) => note.isTrashed === true);
           } else if (req.params.noteStatus === "archive") {
             filteredNotes = filteredNotes.filter((note) => note.isArchived === true);
+          } else if (req.params.noteStatus === "all") {
+            filteredNotes = filteredNotes.filter((note) => note.isArchived === false && note.isTrashed === false);
           }
           res.status(200).json({
             success: true,
@@ -241,6 +243,7 @@ class NoteController {
               message: "Note not found with id " + req.params.noteId,
             });
           }
+          redisCache.clearCache(req.body.userId);
           res.status(200).json({
             success: true,
             message: "Note trashed/restored successfully!",
@@ -280,6 +283,7 @@ class NoteController {
               message: "Note not found with id " + req.params.noteId,
             });
           }
+          redisCache.clearCache(req.body.userId);
           res.json({
             success: true,
             message: "Note deleted successfully!",
@@ -329,6 +333,7 @@ class NoteController {
               message: "Note not found with id " + req.params.noteId,
             });
           }
+          redisCache.clearCache(req.body.userId);
           res.json({
             success: true,
             message: "Note archived successfully!",
@@ -379,6 +384,7 @@ class NoteController {
               message: "Note not found with id " + req.params.noteId,
             });
           }
+          redisCache.clearCache(req.body.userId);
           res.json({
             success: true,
             message: "Note pinned successfully!",

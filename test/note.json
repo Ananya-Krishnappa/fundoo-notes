@@ -5,65 +5,57 @@
     "userId": "61044f6e033c88027c68538d",
     "isPinned": false
   },
-
   "createNoteWithNoTitle": {
     "title": "",
     "description": "this is my second notes",
     "userId": "61044f6e033c88027c68538d",
     "isPinned": false
   },
-
   "createNoteWithNoUserid": {
     "title": "Test Notes",
     "description": "this is my second notes",
     "userId": "",
     "isPinned": false
   },
-
   "createNoteWithNoDescription": {
     "title": "Test Notes",
     "description": "",
     "userId": "61044f6e033c88027c68538d",
     "isPinned": false
   },
-
   "updateNote": {
     "title": "Test Notes",
     "description": "testing notes app",
     "userId": "61044f6e033c88027c68538d",
     "isPinned": false
   },
-
   "updateNoteWithNoTitle": {
     "title": "",
     "description": "this is my second notes",
     "userId": "61044f6e033c88027c68538d",
     "isPinned": false
   },
-
   "updateNoteWithNoUserid": {
     "title": "Test Notes",
     "description": "this is my second notes",
     "userId": "",
     "isPinned": false
   },
-
   "updateNoteWithNoDescription": {
     "title": "Test Notes",
     "description": "",
     "userId": "61044f6e033c88027c68538d",
     "isPinned": false
   },
-
   "getAllNotes": {
     "userId": "61044f6e033c88027c68538d"
   },
-
   "getAllNotesWithNoUserid": {
     "userId": ""
   },
-
   "getNotesById": "60d1ec33dcb70161ff688e09",
-
-  "getNotesByInvalidId": "60ccd2061412cbce156d1b"
+  "getNotesByInvalidId": "60ccd2061412cbce156d1b",
+  "deleteNoteForever": {
+    "userId": ""
+  }
 }

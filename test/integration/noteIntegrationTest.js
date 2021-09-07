@@ -21,7 +21,6 @@ chai.use(chaiHttp);
 
 describe("Notes API", () => {
   let token = "";
-  let noteId = "";
 
   before((done) => {
     chai
@@ -197,27 +196,6 @@ describe("Notes API", () => {
           expect(res.body.message).contain("Notes retrieved successfully");
           res.body.should.have.property("data").should.be.a("object");
           done();
-        });
-    });
-  });
-
-  /**
-   * /DELETE request test
-   * Positive and Negative - Deleting a single contact using ID into database
-   */
-  describe("DELETE /notes/:noteId", () => {
-    it("givenValidInput_whenDeleteFunctionIsCalled_thenReturnSuccessMessage", (done) => {
-      chai
-        .request(server)
-        .delete(`/notes/${noteId}`)
-        .set("Authorization", "Bearer " + token)
-        .end((error, res) => {
-          expect(error).to.be.null;
-          res.should.have.status(200);
-          res.body.should.be.a("object");
-          res.body.should.have.property("success").eql(true);
-          res.body.should.have.property("message").eql("Note deleted successfully!");
-          return done();
         });
     });
   });

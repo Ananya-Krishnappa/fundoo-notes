@@ -25,6 +25,8 @@ class RedisCache {
             filteredNotes = filteredNotes.filter((note) => note.isTrashed === true);
           } else if (req.params.noteStatus === "archive") {
             filteredNotes = filteredNotes.filter((note) => note.isArchived === true);
+          } else if (req.params.noteStatus === "all") {
+            filteredNotes = filteredNotes.filter((note) => note.isArchived === false && note.isTrashed === false);
           }
           res.status(200).json({
             success: true,

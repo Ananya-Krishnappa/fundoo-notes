@@ -21,7 +21,6 @@ chai.use(chaiHttp);
  * /POST request test
  * Positive and Negative - Registration of User Testing
  */
-
 describe("POST-SUCCESS /register", () => {
   it("givenValidArgsInReqBody_whenInvokedRegisterFunc_thenReturnUserRegisteredSuccessfully", (done) => {
     let userData = userInputs.createUser;

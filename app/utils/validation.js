@@ -47,6 +47,7 @@ const validateCreateLabel = Joi.object({
 
 const validateDeleteNote = Joi.object({
   isTrashed: Joi.boolean().required(),
+  userId: Joi.string().required(),
 });
 
 const validateDeleteLabel = Joi.object({
@@ -54,9 +55,11 @@ const validateDeleteLabel = Joi.object({
 });
 const validateArchiveNote = Joi.object({
   isArchived: Joi.boolean().required(),
+  userId: Joi.string().required(),
 });
 const validatePinNote = Joi.object({
   isPinned: Joi.boolean().required(),
+  userId: Joi.string().required(),
 });
 module.exports = {
   validationUserRegistration,
