@@ -230,9 +230,15 @@ class NoteController {
           message: validation.error.details[0].message,
         });
       }
-      const note = {
+      let note = {
         isTrashed: req.body.isTrashed,
       };
+      if (req.body.isTrashed) {
+        note = {
+          isTrashed: req.body.isTrashed,
+          isPinned: false,
+        };
+      }
       // Find note and update it with the request body
       service
         .updateNoteById(req.params.noteId, note)
@@ -320,9 +326,15 @@ class NoteController {
           message: validation.error.details[0].message,
         });
       }
-      const note = {
+      let note = {
         isArchived: req.body.isArchived,
       };
+      if (req.body.isArchived) {
+        note = {
+          isArchived: req.body.isArchived,
+          isPinned: false,
+        };
+      }
       // Find note and update it with the request body
       service
         .updateNoteById(req.params.noteId, note)
@@ -370,10 +382,15 @@ class NoteController {
           message: validation.error.details[0].message,
         });
       }
-      // Create a Note
-      const note = {
+      let note = {
         isPinned: req.body.isPinned,
       };
+      if (req.body.isPinned) {
+        note = {
+          isPinned: req.body.isPinned,
+          isArchived: false,
+        };
+      }
       // Find note and update it with the request body
       service
         .updateNoteById(req.params.noteId, note)

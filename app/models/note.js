@@ -53,7 +53,7 @@ class NoteModel {
 
   findAllNotes = (userId) => {
     return Note.find({ userId: userId })
-      .sort({ createdAt: "desc" })
+      .sort({ updatedAt: "desc" })
       .then((notes) => {
         logger.info("Notes found successfully", notes);
         return notes;
