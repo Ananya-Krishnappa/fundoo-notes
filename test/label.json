@@ -1,27 +1,12 @@
 {
   "createLabel": {
-    "labelName": "woo",
-    "noteId": "611bd480dd4342055c4fc72a"
+    "labelName": "label10"
   },
   "createLabelWithEmptyReqBody": {},
   "createLabelWithNoLabel": {
-    "labelName": "",
-    "noteId": "611bd480dd4342055c4fc72a"
+    "labelName": ""
   },
-  "createLabelWithNoId": {
-    "labelName": "woo",
-    "noteId": ""
-  },
-
   "removeLabel": {
     "isActive": false
-  },
-
-  "removeLabelWithIncorrectBody": {
-    "isActive": {}
-  },
-
-  "getLabelById": "60d45f0bb0734760a4bddd2a",
-
-  "getLabelByIdNeg": "60d45f0bb0734760a4bdd"
+  }
 }

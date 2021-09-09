@@ -2,14 +2,10 @@ const mongoose = require("mongoose");
 const logger = require("../config/loggerConfig.js");
 const LabelSchema = mongoose.Schema(
   {
-    noteId: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Note",
-    },
-    labelName: String,
-    isActive: {
-      type: Boolean,
-      default: true,
+    labelName: {
+      type: String,
+      required: true,
+      unique: true,
     },
   },
   {
@@ -24,8 +20,6 @@ class LabelModel {
   createLabel = (label) => {
     const newLabel = new Label({
       labelName: label.labelName,
-      isActive: label.isActive || true,
-      noteId: label.noteId,
     });
     return newLabel
       .save()
@@ -39,8 +33,8 @@ class LabelModel {
       });
   };
 
-  findAllLabel = (noteId) => {
-    return Label.find({ noteId: noteId })
+  findAllLabel = () => {
+    return Label.find()
       .then((labels) => {
         logger.info("Labels found successfully", labels);
         return labels;

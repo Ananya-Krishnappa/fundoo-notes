@@ -9,7 +9,7 @@
  */
 const service = require("../service/label.js");
 const logger = require("../config/loggerConfig.js");
-const { validateCreateLabel, validateDeleteLabel } = require("../utils/validation.js");
+const { validateCreateLabel } = require("../utils/validation.js");
 const redisCache = require("../middleware/redis.js");
 class LabelController {
   /**
@@ -20,9 +20,9 @@ class LabelController {
   create = (req, res) => {
     try {
       if (Object.keys(req.body).length === 0 && req.body.constructor === Object) {
-        logger.error("Invalid Params. Usage: { 'labelName': '<labelName>','noteId': '<noteId>'");
+        logger.error("Invalid Params. Usage: { 'labelName': '<labelName>'");
         return res.status(400).json({
-          message: "Invalid Params. Usage: { " + "'labelName': '<labelName>'," + "'noteId': '<noteId>'",
+          message: "Invalid Params. Usage: { " + "'labelName': '<labelName>'",
         });
       }
       const validation = validateCreateLabel.validate(req.body);
@@ -34,12 +34,11 @@ class LabelController {
       }
       const label = {
         labelName: req.body.labelName || "Untitled Label",
-        noteId: req.body.noteId,
       };
       service
         .createLabel(label)
         .then((label) => {
-          redisCache.clearCache(req.body.noteId);
+          redisCache.clearCache("labelList");
           res.status(201).send({
             success: true,
             message: "Label created successfully!",
@@ -69,9 +68,8 @@ class LabelController {
    */
   findLabel = (req, res) => {
     try {
-      const noteId = req.params.noteId;
       service
-        .findAllLabel(noteId)
+        .findAllLabel()
         .then((labels) => {
           if (labels != null && labels.length === 0) {
             return res.status(404).send({
@@ -79,7 +77,7 @@ class LabelController {
               message: "No labels present for this note",
             });
           }
-          redisCache.updateCache(noteId, 60, labels);
+          redisCache.updateCache("labelList", 60, labels);
           res.send({
             success: true,
             message: "Labels retrieved successfully from database",
@@ -109,7 +107,6 @@ class LabelController {
    */
   removeLabel = (req, res) => {
     try {
-      const validation = validateDeleteLabel.validate(req.body);
       if (validation.error) {
         return res.status(400).json({
           success: false,

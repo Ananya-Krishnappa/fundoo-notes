@@ -52,8 +52,7 @@ class RedisCache {
    */
   findLabel = (req, res, next) => {
     try {
-      const noteId = req.params.noteId;
-      client.get(noteId, (err, labels) => {
+      client.get("labelList", (err, labels) => {
         if (err) throw err;
         if (labels) {
           let resultLabels = JSON.parse(labels);

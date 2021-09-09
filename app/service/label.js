@@ -41,11 +41,11 @@ class LabelService {
    * @param {*} labelDetails
    * @param {*} callback
    */
-  findAllLabel = (noteId) => {
+  findAllLabel = () => {
     return new Promise(function (resolve, reject) {
       try {
         labelModel
-          .findAllLabel(noteId)
+          .findAllLabel()
           .then((labels) => {
             logger.info("Labels found successfully!", labels);
             resolve(labels);

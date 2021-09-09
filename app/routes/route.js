@@ -651,7 +651,7 @@ module.exports = (app) => {
    *          401:
    *              description: Access token is missing or invalid.
    */
-  app.get("/label/:noteId", redis.findLabel, labels.findLabel);
+  app.get("/label", redis.findLabel, labels.findLabel);
   /**
    * @openapi
    * /label/{labelId}:
