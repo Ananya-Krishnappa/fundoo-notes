@@ -8,6 +8,10 @@ const NoteSchema = mongoose.Schema(
     },
     title: String,
     description: String,
+    labels: {
+      type: Array,
+      default: [],
+    },
     isPinned: {
       type: Boolean,
       default: false,
@@ -38,6 +42,7 @@ class NoteModel {
       isArchived: false,
       isTrashed: false,
       userId: note.userId,
+      labels: note.labels,
     });
     return newNote
       .save()

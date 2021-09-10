@@ -49,6 +49,7 @@ class NoteController {
         description: req.body.description,
         isPinned: req.body.isPinned === true ? true : false,
         userId: req.body.userId,
+        labels: req.body.labels,
       };
       service
         .createNote(note)
@@ -182,6 +183,7 @@ class NoteController {
         title: req.body.title || "Untitled Note",
         description: req.body.description,
         isPinned: req.body.isPinned,
+        labels: req.body.labels,
       };
       // Find note and update it with the request body
       service

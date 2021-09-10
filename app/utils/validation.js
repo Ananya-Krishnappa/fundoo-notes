@@ -37,6 +37,7 @@ const validateCreateNote = Joi.object({
   title: Joi.string().max(50).required(),
   description: Joi.string().max(100).required(),
   isPinned: Joi.boolean(),
+  labels: Joi.array(),
   userId: Joi.string().required(),
 });
 
