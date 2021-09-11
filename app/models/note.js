@@ -81,6 +81,18 @@ class NoteModel {
       });
   };
 
+  findNotesByLabelName = (labelName, userId) => {
+    return Note.find({ "labels.labelName": labelName, userId: userId })
+      .then((note) => {
+        logger.info("Note found successfully", note);
+        return note;
+      })
+      .catch((error) => {
+        logger.error("Error while finding the note by id", error);
+        throw error;
+      });
+  };
+
   updateNoteById = (noteId, note) => {
     return Note.findByIdAndUpdate(noteId, note, {
       new: true,

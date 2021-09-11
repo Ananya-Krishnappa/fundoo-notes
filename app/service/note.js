@@ -85,6 +85,26 @@ class NoteService {
       }
     });
   };
+
+  findNotesByLabelName = (labelName, userId) => {
+    return new Promise(function (resolve, reject) {
+      try {
+        noteModel
+          .findNotesByLabelName(labelName, userId)
+          .then((note) => {
+            logger.info("Note found successfully!", note);
+            resolve(note);
+          })
+          .catch((error) => {
+            logger.error("Error while finding note by id", error);
+            reject(error);
+          });
+      } catch (err) {
+        logger.error("Error while finding note by id", err);
+        reject(err);
+      }
+    });
+  };
   /**
    * @description update note by id
    * @param {*} noteDetails

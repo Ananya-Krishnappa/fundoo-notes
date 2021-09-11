@@ -162,6 +162,39 @@ class NoteController {
       });
     }
   };
+  findNotesByLabelName = (req, res) => {
+    try {
+      const userId = req.body.userId;
+      service
+        .findNotesByLabelName(req.params.labelName, userId)
+        .then((note) => {
+          if (!note) {
+            return res.status(404).json({
+              success: false,
+              message: "Note not found with id " + req.params.labelName,
+            });
+          }
+          res.json({
+            success: true,
+            message: "Note retrieved successfully!",
+            data: note,
+          });
+        })
+        .catch((error) => {
+          logger.error("Error while finding the note by id", error);
+          res.status(500).json({
+            success: false,
+            message: "Some error occurred while retrieving note",
+          });
+        });
+    } catch (error) {
+      logger.error("Error while finding the note by id", error);
+      res.status(500).json({
+        success: false,
+        message: error,
+      });
+    }
+  };
 
   /**
    * @description Update a note identified by the noteId in the request

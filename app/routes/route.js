@@ -422,6 +422,7 @@ module.exports = (app) => {
    *              description: Access token is missing or invalid.
    */
   app.get("/notes/:noteId", notes.findOne);
+  app.post("/findNotesByLabelName/:labelName", notes.findNotesByLabelName);
 
   /**
    * @openapi
