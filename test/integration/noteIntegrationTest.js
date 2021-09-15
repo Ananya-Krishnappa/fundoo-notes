@@ -46,7 +46,7 @@ describe("Notes API", () => {
         .request(server)
         .post("/notes")
         .send(notesData)
-        .set("Authorization", "Bearer " + token)
+        .set("Authorization", "Bearer<" + token + ">")
         .end((error, res) => {
           expect(error).to.be.null;
           noteId = res.body.data._id;
@@ -65,7 +65,7 @@ describe("Notes API", () => {
         .request(server)
         .post("/notes")
         .send(notesData)
-        .set("Authorization", "Bearer " + token)
+        .set("Authorization", "Bearer<" + token + ">")
         .end((error, res) => {
           expect(error).to.be.null;
           res.should.have.status(400);
@@ -81,7 +81,7 @@ describe("Notes API", () => {
         .request(server)
         .post("/notes")
         .send(notesData)
-        .set("Authorization", "Bearer " + token)
+        .set("Authorization", "Bearer<" + token + ">")
         .end((error, res) => {
           expect(error).to.be.null;
           res.should.have.status(400);
@@ -97,7 +97,7 @@ describe("Notes API", () => {
         .request(server)
         .post("/notes")
         .send(notesData)
-        .set("Authorization", "Bearer " + token)
+        .set("Authorization", "Bearer<" + token + ">")
         .end((error, res) => {
           expect(error).to.be.null;
           res.should.have.status(400);
@@ -115,7 +115,7 @@ describe("Notes API", () => {
         .request(server)
         .put("/notes/612cfdc565b76d271ced6fa9")
         .send(notesData)
-        .set("Authorization", "Bearer " + token)
+        .set("Authorization", "Bearer<" + token + ">")
         .end((error, res) => {
           expect(error).to.be.null;
           res.should.have.status(200);
@@ -133,7 +133,7 @@ describe("Notes API", () => {
         .request(server)
         .put("/notes/611bd480dd4342055c4fc72a")
         .send(notesData)
-        .set("Authorization", "Bearer " + token)
+        .set("Authorization", "Bearer<" + token + ">")
         .end((error, res) => {
           expect(error).to.be.null;
           res.should.have.status(400);
@@ -149,7 +149,7 @@ describe("Notes API", () => {
         .request(server)
         .put("/notes/611bd480dd4342055c4fc72a")
         .send(notesData)
-        .set("Authorization", "Bearer " + token)
+        .set("Authorization", "Bearer<" + token + ">")
         .end((error, res) => {
           expect(error).to.be.null;
           res.should.have.status(400);
@@ -165,7 +165,7 @@ describe("Notes API", () => {
         .request(server)
         .put("/notes/611bd480dd4342055c4fc72a")
         .send(notesData)
-        .set("Authorization", "Bearer " + token)
+        .set("Authorization", "Bearer<" + token + ">")
         .end((error, res) => {
           expect(error).to.be.null;
           res.should.have.status(400);
@@ -187,7 +187,7 @@ describe("Notes API", () => {
         .request(server)
         .post("/findNotes/all")
         .send(notesData)
-        .set("Authorization", "Bearer " + token)
+        .set("Authorization", "Bearer<" + token + ">")
         .end((error, res) => {
           expect(error).to.be.null;
           res.should.have.status(200);

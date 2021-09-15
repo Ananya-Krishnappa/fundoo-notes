@@ -33,7 +33,7 @@ describe("Notes API", () => {
         .request(server)
         .post("/label")
         .send(labelData)
-        .set("Authorization", "Bearer " + token)
+        .set("Authorization", "Bearer<" + token + ">")
         .end((error, res) => {
           const errorMsg = "Invalid Params. Usage: { " + "'labelName': '<labelName>'";
           res.should.have.status(400);
@@ -48,7 +48,7 @@ describe("Notes API", () => {
         .request(server)
         .post("/label")
         .send(labelData)
-        .set("Authorization", "Bearer " + token)
+        .set("Authorization", "Bearer<" + token + ">")
         .end((error, res) => {
           expect(error).to.be.null;
           res.should.have.status(400);
@@ -63,7 +63,7 @@ describe("Notes API", () => {
       chai
         .request(server)
         .get("/label")
-        .set("Authorization", "Bearer " + token)
+        .set("Authorization", "Bearer<" + token + ">")
         .end((error, res) => {
           expect(error).to.be.null;
           res.should.have.status(200);
